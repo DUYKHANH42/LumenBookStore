@@ -1,7 +1,11 @@
 <section class="min-h-screen flex items-center justify-center px-6 py-24 bg-soft-glow relative overflow-hidden">
   <!-- Decorative Background -->
-  <div class="absolute top-0 left-0 w-[500px] h-[500px] bg-blue-100 rounded-full blur-[120px] opacity-40 -translate-y-1/2 -translate-x-1/2"></div>
-  <div class="absolute bottom-0 right-0 w-[500px] h-[500px] bg-rose-100 rounded-full blur-[120px] opacity-40 translate-y-1/2 translate-x-1/2"></div>
+  <div
+    class="absolute top-0 left-0 w-[500px] h-[500px] bg-blue-100 rounded-full blur-[120px] opacity-40 -translate-y-1/2 -translate-x-1/2">
+  </div>
+  <div
+    class="absolute bottom-0 right-0 w-[500px] h-[500px] bg-rose-100 rounded-full blur-[120px] opacity-40 translate-y-1/2 translate-x-1/2">
+  </div>
 
   <div class="max-w-md w-full relative z-10">
     <div class="glass-card p-10 md:p-14 border-white/60 shadow-ambient">
@@ -15,11 +19,13 @@
         <div class="space-y-2">
           <label class="text-[10px] font-black uppercase tracking-widest text-slate-400 pl-1">Họ và tên</label>
           <div class="relative group">
-            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-lg group-focus-within:text-blue-600">person</span>
+            <span
+              class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-lg group-focus-within:text-blue-600">person</span>
             <input type="text" formControlName="fullName" placeholder="Nguyễn Văn A"
               class="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 pl-12 pr-4 text-sm font-bold outline-none focus:border-blue-600 focus:bg-white transition-premium shadow-inner" />
           </div>
-          <div *ngIf="registerForm.get('fullName')?.touched && registerForm.get('fullName')?.invalid" class="text-rose-500 text-[10px] font-bold pl-1">
+          <div *ngIf="registerForm.get('fullName')?.touched && registerForm.get('fullName')?.invalid"
+            class="text-rose-500 text-[10px] font-bold pl-1">
             Họ tên là bắt buộc.
           </div>
         </div>
@@ -28,19 +34,22 @@
         <div class="space-y-2">
           <label class="text-[10px] font-black uppercase tracking-widest text-slate-400 pl-1">Email</label>
           <div class="relative group">
-            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-lg group-focus-within:text-blue-600">mail</span>
+            <span
+              class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-lg group-focus-within:text-blue-600">mail</span>
             <input type="email" formControlName="email" placeholder="example@gmail.com"
               class="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 pl-12 pr-4 text-sm font-bold outline-none focus:border-blue-600 focus:bg-white transition-premium shadow-inner" />
-            
+
             <!-- Trạng thái kiểm tra email -->
             <div *ngIf="registerForm.get('email')?.pending" class="absolute right-4 top-1/2 -translate-y-1/2">
-               <span class="w-4 h-4 border-2 border-slate-300 border-t-blue-600 rounded-full animate-spin block"></span>
+              <span class="w-4 h-4 border-2 border-slate-300 border-t-blue-600 rounded-full animate-spin block"></span>
             </div>
-            <div *ngIf="registerForm.get('email')?.valid && registerForm.get('email')?.value" class="absolute right-4 top-1/2 -translate-y-1/2">
-               <span class="material-symbols-outlined text-emerald-500 text-lg animate-fadeIn">check_circle</span>
+            <div *ngIf="registerForm.get('email')?.valid && registerForm.get('email')?.value"
+              class="absolute right-4 top-1/2 -translate-y-1/2">
+              <span class="material-symbols-outlined text-emerald-500 text-lg animate-fadeIn">check_circle</span>
             </div>
           </div>
-          <div *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.invalid" class="text-rose-500 text-[10px] font-bold pl-1 animate-fadeIn">
+          <div *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.invalid"
+            class="text-rose-500 text-[10px] font-bold pl-1 animate-fadeIn">
             <span *ngIf="registerForm.get('email')?.errors?.['required']">Vui lòng nhập email.</span>
             <span *ngIf="registerForm.get('email')?.errors?.['email']">Email không đúng định dạng.</span>
             <span *ngIf="registerForm.get('email')?.errors?.['emailExists']">Email này đã được sử dụng.</span>
@@ -51,12 +60,17 @@
         <div class="space-y-2">
           <label class="text-[10px] font-black uppercase tracking-widest text-slate-400 pl-1">Mật khẩu</label>
           <div class="relative group">
-            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-lg group-focus-within:text-blue-600">lock</span>
+            <span
+              class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-lg group-focus-within:text-blue-600">lock</span>
             <input type="password" formControlName="password" placeholder="••••••••"
               class="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 pl-12 pr-4 text-sm font-bold outline-none focus:border-blue-600 focus:bg-white transition-premium shadow-inner" />
           </div>
-          <div *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.invalid" class="text-rose-500 text-[10px] font-bold pl-1">
-            Mật khẩu phải từ 6 ký tự.
+          <div *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.invalid"
+            class="text-rose-500 text-[10px] font-bold pl-1 space-y-1">
+            <div *ngIf="registerForm.get('password')?.errors?.['required']">Mật khẩu là bắt buộc.</div>
+            <div *ngIf="registerForm.get('password')?.errors?.['minlength']">Mật khẩu phải từ 8 ký tự.</div>
+            <div *ngIf="registerForm.get('password')?.errors?.['pattern']">Mật khẩu phải chứa ít nhất 1 chữ hoa, 1 chữ
+              thường và 1 chữ số.</div>
           </div>
         </div>
 
@@ -64,11 +78,13 @@
         <div class="space-y-2">
           <label class="text-[10px] font-black uppercase tracking-widest text-slate-400 pl-1">Xác nhận mật khẩu</label>
           <div class="relative group">
-            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-lg group-focus-within:text-blue-600">verified_user</span>
+            <span
+              class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-lg group-focus-within:text-blue-600">verified_user</span>
             <input type="password" formControlName="confirmPassword" placeholder="••••••••"
               class="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 pl-12 pr-4 text-sm font-bold outline-none focus:border-blue-600 focus:bg-white transition-premium shadow-inner" />
           </div>
-          <div *ngIf="registerForm.get('confirmPassword')?.touched && registerForm.hasError('passwordMismatch')" class="text-rose-500 text-[10px] font-bold pl-1 animate-fadeIn">
+          <div *ngIf="registerForm.get('confirmPassword')?.touched && registerForm.hasError('passwordMismatch')"
+            class="text-rose-500 text-[10px] font-bold pl-1 animate-fadeIn">
             Mật khẩu xác nhận không khớp.
           </div>
         </div>
@@ -76,13 +92,13 @@
         <!-- Nút Đăng ký -->
         <button type="submit" [disabled]="registerForm.invalid || isLoading"
           class="w-full py-4 bg-slate-900 text-white rounded-2xl font-black text-sm uppercase tracking-widest shadow-2xl hover:bg-blue-600 active:scale-95 transition-premium disabled:opacity-50 flex items-center justify-center gap-3">
-           Đăng ký tài khoản
+          Đăng ký tài khoản
           <span class="material-symbols-outlined">person_add</span>
         </button>
 
         <div class="text-center pt-4">
           <p class="text-slate-500 text-sm font-medium">
-            Đã có tài khoản? 
+            Đã có tài khoản?
             <a routerLink="/login" class="text-blue-600 font-bold hover:underline">Đăng nhập ngay</a>
           </p>
         </div>

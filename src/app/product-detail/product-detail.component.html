@@ -14,7 +14,7 @@
     <div class="lg:col-span-5 space-y-6 sticky top-32">
       <!-- Main Image Display -->
       <div class="group bg-white rounded-[3rem] p-12 flex items-center justify-center overflow-hidden border border-slate-100 shadow-2xl relative aspect-square">
-        <img [src]="'https://localhost:44326/uploads/' + (selectedImage || product.imageUrl)" [alt]="product.name"
+        <img [src]="'https://bookstore-asp-nc.onrender.com/uploads/' + (selectedImage || product.imageUrl)" [alt]="product.name"
           class="w-full h-full object-contain max-w-sm rounded-xl shadow-2xl transform hover:scale-105 transition-all duration-700 relative z-10" />
       </div>
 
@@ -27,7 +27,7 @@
                 [class.border-slate-100]="selectedImage !== img.imageUrl"
                 [class.shadow-md]="selectedImage === img.imageUrl"
                 [class.scale-105]="selectedImage === img.imageUrl">
-          <img [src]="'https://localhost:44326/uploads/' + img.imageUrl" class="w-full h-full object-cover">
+          <img [src]="'https://bookstore-asp-nc.onrender.com/uploads/' + img.imageUrl" class="w-full h-full object-cover">
         </button>
       </div>
     </div>
@@ -220,7 +220,7 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
         <div *ngFor="let p of relatedProducts" class="group bg-white p-4 rounded-[2.5rem] shadow-sm hover:shadow-2xl border border-slate-50 transition-premium">
             <div [routerLink]="['/product', p.id]" class="block relative aspect-[3/4] rounded-[2rem] overflow-hidden mb-8 cursor-pointer shadow-inner">
-                <img [src]="'https://localhost:44326/uploads/' + p.imageUrl" [alt]="p.name" class="w-full h-full object-cover transition-premium group-hover:scale-110" />
+                <img [src]="'https://bookstore-asp-nc.onrender.com/uploads/' + p.imageUrl" [alt]="p.name" class="w-full h-full object-cover transition-premium group-hover:scale-110" />
                 <button (click)="toggleFavorite(p); $event.stopPropagation()" [disabled]="togglingId === p.id" class="absolute top-4 right-4 w-10 h-10 bg-white/80 backdrop-blur-md shadow-xl border border-white/20 rounded-full flex items-center justify-center transition-premium z-30">
                     <span class="material-symbols-outlined" [class.text-red-600]="p.isFavorited" [class.text-slate-400]="!p.isFavorited" [style.font-variation-settings]="p.isFavorited ? '\'FILL\' 1' : '\'FILL\' 0'">favorite</span>
                 </button>

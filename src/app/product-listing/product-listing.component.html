@@ -82,7 +82,7 @@
             class="group bg-white p-4 rounded-[2.5rem] shadow-sm hover:shadow-2xl transition-all border border-slate-50">
             <div [routerLink]="['/product', product.id]"
               class="block relative aspect-[3/4] rounded-[2rem] overflow-hidden mb-8 bg-slate-50 cursor-pointer">
-              <img [src]="'https://localhost:44326/uploads/' + product.imageUrl" [alt]="product.name"
+              <img [src]="'https://bookstore-asp-nc.onrender.com/uploads/' + product.imageUrl" [alt]="product.name"
                 class="w-full h-full object-cover transition-all duration-700 group-hover:scale-110" />
               <button (click)="toggleFavorite(product); $event.stopPropagation()" [disabled]="togglingId === product.id"
                 class="absolute top-4 right-4 w-10 h-10 bg-white/80 backdrop-blur-md border border-white/20 rounded-full flex items-center justify-center z-30">

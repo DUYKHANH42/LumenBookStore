@@ -250,7 +250,7 @@
                     class="flex items-center gap-6 p-4 rounded-3xl bg-slate-50/50 border border-slate-50">
                     <div class="w-16 h-20 rounded-2xl overflow-hidden flex-shrink-0 shadow-sm">
                       <img
-                        [src]="item.imageUrl.startsWith('http') ? item.imageUrl : 'https://localhost:44326/uploads/' + item.imageUrl"
+                        [src]="item.imageUrl.startsWith('http') ? item.imageUrl : 'https://bookstore-asp-nc.onrender.com/uploads/' + item.imageUrl"
                         class="w-full h-full object-cover">
                     </div>
                     <div class="flex-1 min-w-0">
@@ -529,7 +529,7 @@
 
                 <div [routerLink]="['/product', item.productId]"
                   class="w-20 h-[100px] flex-shrink-0 rounded-[1.5rem] overflow-hidden bg-slate-50 cursor-pointer shadow-inner">
-                  <img [src]="'https://localhost:44326/uploads/' + item.imageUrl"
+                  <img [src]="'https://bookstore-asp-nc.onrender.com/uploads/' + item.imageUrl"
                     class="w-full h-full object-cover transition-premium group-hover:scale-110" />
                 </div>
 

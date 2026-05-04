@@ -62,7 +62,7 @@
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
     <div *ngFor="let product of myFavoriteProducts.slice(0, 4)" class="group bg-white p-4 rounded-[2.5rem] shadow-sm hover:shadow-2xl transition-premium border border-rose-50 relative">
       <div [routerLink]="['/product', product.id]" class="block relative aspect-[3/4] rounded-[2rem] overflow-hidden mb-8 cursor-pointer shadow-inner">
-        <img [src]="'https://localhost:44326/uploads/' + product.imageUrl" [alt]="product.name" class="w-full h-full object-cover transition-premium group-hover:scale-110" />
+        <img [src]="'https://bookstore-asp-nc.onrender.com/uploads/' + product.imageUrl" [alt]="product.name" class="w-full h-full object-cover transition-premium group-hover:scale-110" />
         <button (click)="toggleFavorite(product); $event.stopPropagation()" [disabled]="togglingId === product.id" class="absolute top-4 right-4 w-10 h-10 bg-white/80 backdrop-blur-md shadow-xl border border-white/20 rounded-full flex items-center justify-center transition-premium z-30">
           <span class="material-symbols-outlined" [class.text-red-600]="product.isFavorited" [class.text-slate-400]="!product.isFavorited" [style.font-variation-settings]="product.isFavorited ? '\'FILL\' 1' : '\'FILL\' 0'">favorite</span>
         </button>
@@ -116,7 +116,7 @@
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 px-4 relative z-10">
     <div *ngFor="let p of flashSaleProducts" class="group bg-white/5 backdrop-blur-sm p-4 rounded-[2.5rem] border border-white/10 hover:bg-white transition-premium group">
       <div [routerLink]="['/product', p.id]" class="block relative aspect-[3/4] rounded-[2rem] overflow-hidden mb-8 cursor-pointer shadow-2xl">
-        <img [src]="'https://localhost:44326/uploads/' + p.imageUrl" [alt]="p.name" class="w-full h-full object-cover transition-premium group-hover:scale-110" />
+        <img [src]="'https://bookstore-asp-nc.onrender.com/uploads/' + p.imageUrl" [alt]="p.name" class="w-full h-full object-cover transition-premium group-hover:scale-110" />
         <div class="absolute top-4 left-4 bg-rose-600 text-white px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest shadow-lg z-20">Sale</div>
         <button (click)="toggleFavorite(p); $event.stopPropagation()" [disabled]="togglingId === p.id" class="absolute top-4 right-4 w-10 h-10 bg-black/20 backdrop-blur-md border border-white/10 rounded-full flex items-center justify-center transition-premium z-30 group-hover:bg-white">
           <span class="material-symbols-outlined group-hover:text-red-600" [class.text-red-600]="p.isFavorited" [class.text-white]="!p.isFavorited" [style.font-variation-settings]="p.isFavorited ? '\'FILL\' 1' : '\'FILL\' 0'">favorite</span>
@@ -148,7 +148,7 @@
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
     <div *ngFor="let product of getProductsByCategory(cat.id)" class="group bg-white p-4 rounded-[2.5rem] shadow-sm hover:shadow-2xl border border-slate-50 transition-all">
       <div [routerLink]="['/product', product.id]" class="block relative aspect-[3/4] rounded-[2rem] overflow-hidden mb-8 cursor-pointer">
-        <img [src]="'https://localhost:44326/uploads/' + product.imageUrl" [alt]="product.name" class="w-full h-full object-cover transition-all group-hover:scale-110" />
+        <img [src]="'https://bookstore-asp-nc.onrender.com/uploads/' + product.imageUrl" [alt]="product.name" class="w-full h-full object-cover transition-all group-hover:scale-110" />
         <button (click)="toggleFavorite(product); $event.stopPropagation()" [disabled]="togglingId === product.id" class="absolute top-4 right-4 w-10 h-10 bg-white/80 backdrop-blur-md rounded-full flex items-center justify-center transition-all">
           <span class="material-symbols-outlined" [class.text-red-600]="product.isFavorited" [class.text-slate-400]="!product.isFavorited" [style.font-variation-settings]="product.isFavorited ? '\'FILL\' 1' : '\'FILL\' 0'">favorite</span>
         </button>
