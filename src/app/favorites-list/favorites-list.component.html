@@ -1,0 +1,43 @@
+<section class="pt-24 pb-20 max-w-7xl mx-auto px-6 lg:px-8">
+    <header class="mb-16">
+        <div class="flex items-center gap-3 mb-6">
+            <span class="w-12 h-[2px] bg-blue-600 rounded-full"></span>
+            <span class="text-xs font-black tracking-[0.3em] uppercase text-blue-600">Bộ sưu tập cá nhân</span>
+        </div>
+        <h1 class="text-4xl md:text-6xl font-black tracking-tighter mb-6 text-slate-900 leading-tight">Sản phẩm yêu thích</h1>
+        <p class="text-slate-500 max-w-2xl text-base font-medium leading-relaxed">Nơi lưu giữ những sản phẩm bạn đã chọn lựa và mong muốn sở hữu.</p>
+    </header>
+
+    <div *ngIf="isLoading" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div *ngFor="let i of [1,2,3,4]" class="bg-white p-4 rounded-[2.5rem] border border-slate-50 animate-pulse">
+            <div class="aspect-[3/4] rounded-[2rem] bg-slate-100 mb-6"></div>
+        </div>
+    </div>
+
+    <div *ngIf="!isLoading && favorites.length === 0" class="flex flex-col items-center justify-center py-32 text-center">
+        <div class="w-24 h-24 rounded-full bg-slate-50 flex items-center justify-center mb-8">
+            <span class="material-symbols-outlined text-5xl text-slate-200">favorite</span>
+        </div>
+        <h3 class="text-2xl font-black text-slate-800 mb-3">Danh sách trống</h3>
+        <p class="text-slate-400 mb-10 max-w-sm">Bạn chưa yêu thích sản phẩm nào. Hãy khám phá và lưu lại những món đồ ưng ý nhé!</p>
+        <a routerLink="/" class="px-10 py-4 bg-slate-900 text-white rounded-full font-black text-xs uppercase tracking-widest shadow-2xl hover:bg-blue-600 transition-all">Khám phá ngay</a>
+    </div>
+
+    <div *ngIf="!isLoading && favorites.length > 0" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
+        <div *ngFor="let item of favorites" class="group bg-white p-4 rounded-[2.5rem] shadow-sm hover:shadow-2xl transition-premium border border-slate-50 relative">
+            <button (click)="removeFavorite(item.productId)" class="absolute top-8 right-8 z-20 w-10 h-10 bg-white/90 backdrop-blur-md rounded-full flex items-center justify-center text-red-600 shadow-lg hover:bg-red-600 hover:text-white transition-all shadow-red-200/20">
+                <span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">favorite</span>
+            </button>
+            <div [routerLink]="['/product', item.productId]" class="block relative aspect-[3/4] rounded-[2rem] overflow-hidden mb-8 cursor-pointer shadow-inner">
+                <img [src]="'https://localhost:44326/uploads/' + item.imageUrl" class="w-full h-full object-cover transition-premium group-hover:scale-110" />
+            </div>
+            <div class="px-2 pb-2">
+                <h3 [routerLink]="['/product', item.productId]" class="font-black text-xl mb-6 leading-tight line-clamp-2 min-h-[3.5rem] hover:text-blue-600 cursor-pointer text-slate-800">{{item.productName}}</h3>
+                <div class="flex items-center justify-between pt-6 border-t border-slate-50">
+                    <span class="text-2xl font-black premium-gradient">{{item.price | currency:'VND':'symbol':'1.0-0'}}</span>
+                    <button [routerLink]="['/product', item.productId]" class="px-6 py-2.5 bg-slate-900 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-blue-600 transition-all">Chi tiết</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

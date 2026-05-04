@@ -1,0 +1,32 @@
+<section class="min-h-[80vh] flex items-center justify-center px-6 relative overflow-hidden bg-soft-glow">
+  <!-- Decorative Elements -->
+  <div class="absolute top-20 left-10 w-64 h-64 bg-blue-100 rounded-full blur-3xl opacity-50 animate-float"></div>
+  <div class="absolute bottom-20 right-10 w-96 h-96 bg-purple-50 rounded-full blur-3xl opacity-40 animate-float" style="animation-delay: -3s;"></div>
+
+  <div class="max-w-2xl w-full glass-card p-12 md:p-20 text-center relative z-10 border-white/60 shadow-ambient">
+    <div class="inline-block px-4 py-1.5 bg-blue-50 text-blue-600 rounded-full font-black tracking-[0.2em] text-[10px] uppercase mb-8 border border-blue-100">
+      Error 404
+    </div>
+    
+    <h1 class="text-8xl md:text-[150px] font-black tracking-tighter leading-none mb-4 premium-gradient drop-shadow-2xl">
+      Oops!
+    </h1>
+    
+    <h2 class="text-2xl md:text-3xl font-black text-slate-900 mb-6 tracking-tight">
+      Trang bạn tìm kiếm không tồn tại
+    </h2>
+    
+    <p class="text-slate-500 text-lg mb-12 font-medium leading-relaxed max-w-md mx-auto">
+      Có vẻ như đường dẫn này đã bị thay đổi hoặc không còn hiện diện trong thư viện tri thức của chúng tôi.
+    </p>
+
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-6">
+      <button routerLink="/" class="w-full sm:w-auto bg-slate-900 text-white px-10 py-5 rounded-full font-black shadow-2xl hover:scale-105 transition-premium flex items-center justify-center gap-3">
+        Về Trang Chủ <span class="material-symbols-outlined">home</span>
+      </button>
+      <button routerLink="/subcategory/1" class="w-full sm:w-auto bg-white text-slate-900 border border-slate-200 px-10 py-5 rounded-full font-black hover:bg-slate-50 transition-premium shadow-sm">
+        Khám phá Sách
+      </button>
+    </div>
+  </div>
+</section>

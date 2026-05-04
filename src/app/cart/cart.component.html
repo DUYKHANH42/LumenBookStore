@@ -1,0 +1,90 @@
+<main *ngIf="cart$ | async as cart" class="pt-28 pb-20 px-6 max-w-7xl mx-auto">
+  <header class="mb-12">
+    <div class="flex justify-between items-end">
+      <div>
+        <h1 class="text-4xl font-extrabold tracking-tight text-slate-900 mb-2">Giỏ hàng của bạn</h1>
+        <p class="text-slate-500 font-medium">{{ cart.items.length }} sản phẩm đã sẵn sàng.</p>
+      </div>
+      <button *ngIf="cart.items.length > 0" (click)="clearAll()"
+        class="text-xs font-black uppercase tracking-widest text-red-500 hover:text-red-700 flex items-center gap-2 mb-2 transition-colors">
+        <span class="material-symbols-outlined text-lg">delete_sweep</span> Xóa tất cả
+      </button>
+    </div>
+  </header>
+
+  <div *ngIf="cart.items.length > 0; else emptyCart" class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+    <div class="lg:col-span-8 space-y-8">
+      <div *ngFor="let item of cart.items"
+        class="group flex flex-col sm:flex-row items-center gap-8 bg-white p-6 rounded-xl transition-all hover:bg-slate-50 shadow-sm border border-slate-100">
+        <div class="w-32 h-44 overflow-hidden rounded-lg shadow-sm flex-shrink-0">
+          <img [src]="'https://localhost:44326/uploads/' + item.imageUrl" [alt]="item.productName"
+            class="w-full h-full object-cover">
+        </div>
+        <div class="flex-grow space-y-2 w-full">
+          <div class="flex justify-between items-start">
+            <div>
+              <span class="text-[10px] font-bold tracking-widest text-blue-600 uppercase mb-1 block">SẢN PHẨM</span>
+              <h3 class="text-xl font-bold text-slate-800">{{ item.productName }}</h3>
+              <p *ngIf="item.brand" class="text-sm text-slate-500">Thương hiệu: {{ item.brand }}</p>
+            </div>
+            <button (click)="removeItem(item)" class="text-slate-400 hover:text-red-500 transition-colors p-2">
+              <span class="material-symbols-outlined">delete</span>
+            </button>
+          </div>
+          <div class="flex items-center justify-between mt-6">
+            <div class="flex items-center bg-slate-100 rounded-full px-3 py-1">
+              <button (click)="updateQuantity(item, -1)" class="p-1 text-slate-500 hover:text-blue-600"><span
+                  class="material-symbols-outlined text-sm">remove</span></button>
+              <span class="px-4 font-semibold text-slate-800">{{ item.quantity }}</span>
+              <button (click)="updateQuantity(item, 1)" class="p-1 text-slate-500 hover:text-blue-600"><span
+                  class="material-symbols-outlined text-sm">add</span></button>
+            </div>
+            <div class="text-right flex flex-col items-end">
+              <span *ngIf="item.originalPrice > item.price" class="text-xs text-slate-400 line-through">{{ item.originalPrice | currency:'VND':'symbol':'1.0-0' }}</span>
+              <span class="text-lg font-bold text-slate-900">{{ item.price | currency:'VND':'symbol':'1.0-0' }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pt-6">
+        <a routerLink="/" class="inline-flex items-center gap-2 font-semibold text-blue-600">
+          <span class="material-symbols-outlined text-lg">arrow_back</span> Tiếp tục mua sắm
+        </a>
+      </div>
+    </div>
+
+    <aside class="lg:col-span-4 sticky top-28">
+      <div class="bg-slate-50 rounded-xl p-8 space-y-6 border border-slate-200">
+        <h2 class="text-2xl font-bold text-slate-800">Tóm tắt đơn hàng</h2>
+        <div class="space-y-4 pt-2">
+          <div class="flex justify-between text-slate-600">
+            <span>Tạm tính</span>
+            <span class="font-semibold text-slate-800">{{ cart.totalPrice | currency:'VND':'symbol':'1.0-0' }}</span>
+          </div>
+        </div>
+        <div class="border-t border-slate-200 pt-6">
+          <div class="flex justify-between items-end">
+            <span class="text-lg font-bold text-slate-800">Tổng cộng</span>
+            <span class="text-3xl font-extrabold tracking-tighter text-blue-700">{{ cart.totalPrice |
+              currency:'VND':'symbol':'1.0-0' }}</span>
+          </div>
+        </div>
+        <button routerLink="/checkout"
+          class="w-full bg-blue-600 text-white py-4 rounded-full font-bold text-lg shadow-lg hover:bg-blue-700 transition-all active:scale-95 flex items-center justify-center gap-2">
+          Tiến hành thanh toán <span class="material-symbols-outlined">arrow_forward</span>
+        </button>
+      </div>
+    </aside>
+  </div>
+
+  <ng-template #emptyCart>
+    <div class="flex flex-col items-center justify-center py-24 text-center">
+      <div class="w-24 h-24 bg-slate-50 rounded-full flex items-center justify-center mb-6">
+        <span class="material-symbols-outlined text-5xl text-slate-300">shopping_cart_off</span>
+      </div>
+      <h2 class="text-2xl font-bold text-slate-800 mb-2">Giỏ hàng của bạn đang trống</h2>
+      <a routerLink="/" class="bg-blue-600 text-white px-8 py-3 rounded-full font-bold shadow-lg mt-8 inline-block">Khám
+        phá ngay</a>
+    </div>
+  </ng-template>
+</main>

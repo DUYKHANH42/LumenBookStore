@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>BookStoreGiaoDien - Literary Architect</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "background": "#f8f9ff",
+            "on-background": "#20344b",
+            "on-surface-variant": "#4d617a",
+            "primary-fixed-dim": "#98b1ff",
+            "on-tertiary-fixed-variant": "#006544",
+            "surface-container-lowest": "#ffffff",
+            "secondary": "#865400",
+            "on-tertiary": "#e6ffee",
+            "inverse-surface": "#050f1a",
+            "outline-variant": "#9fb4d0",
+            "error-container": "#f56965",
+            "on-secondary": "#fff7f3",
+            "error-dim": "#70030f",
+            "on-primary-fixed": "#002265",
+            "on-secondary-fixed": "#5b3700",
+            "on-error": "#fff7f6",
+            "primary-fixed": "#acbfff",
+            "primary-container": "#acbfff",
+            "on-primary-fixed-variant": "#003ca5",
+            "surface-container": "#e5eeff",
+            "on-secondary-fixed-variant": "#815100",
+            "secondary-container": "#ffddb8",
+            "surface-dim": "#c4dcfd",
+            "on-error-container": "#65000b",
+            "surface-bright": "#f8f9ff",
+            "surface-container-high": "#dbe9ff",
+            "outline": "#687c96",
+            "tertiary-dim": "#005f40",
+            "surface-tint": "#0053dc",
+            "surface-container-highest": "#d2e4ff",
+            "secondary-dim": "#764900",
+            "on-primary-container": "#003592",
+            "on-tertiary-fixed": "#00452d",
+            "primary": "#0053dc",
+            "inverse-on-surface": "#939ead",
+            "on-primary": "#faf8ff",
+            "error": "#ac3434",
+            "tertiary": "#006d4a",
+            "surface-variant": "#d2e4ff",
+            "tertiary-fixed-dim": "#58e7ab",
+            "on-secondary-container": "#744800",
+            "secondary-fixed": "#ffddb8",
+            "surface-container-low": "#eef4ff",
+            "on-surface": "#20344b",
+            "tertiary-fixed": "#69f6b8",
+            "on-tertiary-container": "#005a3c",
+            "surface": "#f8f9ff",
+            "primary-dim": "#0049c2",
+            "secondary-fixed-dim": "#ffcb8e",
+            "tertiary-container": "#69f6b8",
+            "inverse-primary": "#618bff"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "fontFamily": {
+            "headline": ["Plus Jakarta Sans"],
+            "body": ["Plus Jakarta Sans"],
+            "label": ["Plus Jakarta Sans"]
+          }
+        },
+      },
+    }
+  </script>
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    .hide-scrollbar::-webkit-scrollbar { display: none; }
+    .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body class="bg-background text-on-background">
+  <app-root></app-root>
+</body>
+</html>

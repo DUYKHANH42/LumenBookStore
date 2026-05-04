@@ -1,0 +1,52 @@
+<div class="pt-28 pb-20 px-6 max-w-5xl mx-auto">
+  <div class="flex justify-between items-center mb-10">
+    <div>
+      <h1 class="text-3xl font-black tracking-tighter text-slate-900">Địa chỉ của tôi</h1>
+      <p class="text-slate-500 font-medium">Quản lý thông tin nhận hàng của bạn</p>
+    </div>
+    <button (click)="openForm()" class="bg-blue-600 text-white px-6 py-3 rounded-xl font-bold flex items-center gap-2 hover:bg-blue-700 transition-all shadow-lg active:scale-95">
+      <span class="material-symbols-outlined">add</span>
+      Thêm địa chỉ mới
+    </button>
+  </div>
+
+  <div *ngIf="isLoading" class="flex justify-center py-20">
+    <div class="w-10 h-10 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+  </div>
+
+  <div *ngIf="!isLoading && addresses.length === 0" class="glass-card p-20 text-center">
+    <span class="material-symbols-outlined text-6xl text-slate-300 mb-4">location_off</span>
+    <h3 class="text-xl font-bold text-slate-800">Chưa có địa chỉ nào</h3>
+    <p class="text-slate-500 mb-8">Vui lòng thêm địa chỉ để thuận tiện hơn khi đặt hàng.</p>
+  </div>
+
+  <div class="space-y-6">
+    <div *ngFor="let addr of addresses" class="glass-card p-8 border-slate-100 hover:border-blue-200 transition-all group">
+      <div class="flex justify-between items-start">
+        <div class="space-y-2">
+          <div class="flex items-center gap-3">
+            <span class="text-lg font-black text-slate-900">{{addr.receiverName}}</span>
+            <div class="w-[1px] h-4 bg-slate-300"></div>
+            <span class="text-slate-500 font-bold">{{addr.phoneNumber}}</span>
+            <span *ngIf="addr.isDefault" class="text-[10px] bg-blue-50 text-blue-600 px-2 py-0.5 rounded border border-blue-100 font-black uppercase tracking-widest">Mặc định</span>
+          </div>
+          <p class="text-slate-600 font-medium">{{addr.addressLine}}</p>
+        </div>
+        <div class="flex items-center gap-4">
+          <button (click)="openForm(addr)" class="text-blue-600 font-bold text-sm hover:underline">Sửa</button>
+          <button *ngIf="!addr.isDefault" (click)="deleteAddress(addr.id)" class="text-red-500 font-bold text-sm hover:underline">Xóa</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Form -->
+<div *ngIf="showForm" class="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-slate-900/40 backdrop-blur-sm">
+  <div class="bg-white w-full max-w-lg rounded-[2.5rem] shadow-2xl p-10 animate-fade-in relative">
+    <button (click)="closeForm()" class="absolute top-8 right-8 text-slate-400 hover:text-slate-600">
+      <span class="material-symbols-outlined">close</span>
+    </button>
+    <app-address-form [address]="selectedAddress" (submitted)="onFormSubmit()" (cancelled)="closeForm()"></app-address-form>
+  </div>
+</div>

@@ -1,0 +1,187 @@
+<main *ngIf="cart$ | async as cart" class="pt-28 pb-20 px-6 max-w-7xl mx-auto">
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+    <!-- Left: Shipping & Payment -->
+    <div class="lg:col-span-8 space-y-10">
+      <header>
+        <h1 class="text-4xl font-black tracking-tighter text-slate-900 mb-2">Thanh toán</h1>
+        <p class="text-slate-500 font-medium">Hoàn tất thông tin để nhận siêu phẩm của bạn.</p>
+      </header>
+
+      <!-- Address Selection -->
+      <section class="glass-card p-10 border-slate-100">
+        <div class="flex justify-between items-center mb-8">
+          <h2 class="text-xl font-black text-slate-800 flex items-center gap-3">
+            <span class="material-symbols-outlined text-blue-600">location_on</span>
+            Địa chỉ nhận hàng
+          </h2>
+          <button routerLink="/addresses" class="text-blue-600 font-bold text-sm hover:underline">Quản lý địa
+            chỉ</button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+          <div *ngFor="let addr of addresses" (click)="selectAddress(addr)"
+            class="p-6 rounded-[2rem] border-2 cursor-pointer transition-all active:scale-[0.98]"
+            [class.border-blue-600]="selectedAddressId === addr.id" [class.bg-blue-50]="selectedAddressId === addr.id"
+            [class.border-slate-100]="selectedAddressId !== addr.id"
+            [class.hover:border-blue-200]="selectedAddressId !== addr.id">
+            <div class="flex justify-between items-start mb-2">
+              <span class="font-black text-slate-800">{{addr.receiverName}}</span>
+              <span *ngIf="addr.isDefault"
+                class="text-[9px] font-black text-blue-600 uppercase tracking-widest bg-white px-2 py-0.5 rounded border border-blue-100">Mặc
+                định</span>
+            </div>
+            <p class="text-xs text-slate-500 font-bold mb-3">{{addr.phoneNumber}}</p>
+            <p class="text-xs text-slate-600 leading-relaxed line-clamp-2">{{addr.addressLine}}</p>
+          </div>
+        </div>
+
+        <!-- Manual form fields (populated from selection) -->
+        <form [formGroup]="checkoutForm" class="space-y-6 pt-6 border-t border-slate-50">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="space-y-2">
+              <label class="text-[10px] font-black uppercase tracking-widest text-slate-400 px-1">Tên người nhận</label>
+              <input formControlName="shippingName" type="text"
+                class="w-full bg-slate-50 border border-slate-100 rounded-2xl px-5 py-4 font-bold text-slate-800 outline-none focus:border-blue-600 transition-all">
+            </div>
+            <div class="space-y-2">
+              <label class="text-[10px] font-black uppercase tracking-widest text-slate-400 px-1">Số điện thoại</label>
+              <input formControlName="shippingPhone" type="text"
+                class="w-full bg-slate-50 border border-slate-100 rounded-2xl px-5 py-4 font-bold text-slate-800 outline-none focus:border-blue-600 transition-all">
+            </div>
+          </div>
+          <div class="space-y-2">
+            <label class="text-[10px] font-black uppercase tracking-widest text-slate-400 px-1">Địa chỉ giao
+              hàng</label>
+            <textarea formControlName="shippingAddress" rows="2"
+              class="w-full bg-slate-50 border border-slate-100 rounded-2xl px-5 py-4 font-bold text-slate-800 outline-none focus:border-blue-600 transition-all resize-none"></textarea>
+          </div>
+        </form>
+      </section>
+
+      <!-- Payment Method -->
+      <section class="glass-card p-10 border-slate-100">
+        <h2 class="text-xl font-black text-slate-800 flex items-center gap-3 mb-8">
+          <span class="material-symbols-outlined text-blue-600">account_balance_wallet</span>
+          Phương thức thanh toán
+        </h2>
+
+        <div class="space-y-4">
+          <label class="flex items-center gap-4 p-5 rounded-3xl border-2 cursor-pointer transition-all"
+            [class.border-blue-600]="checkoutForm.get('paymentMethod')?.value === 0"
+            [class.bg-blue-50]="checkoutForm.get('paymentMethod')?.value === 0"
+            [class.border-slate-100]="checkoutForm.get('paymentMethod')?.value !== 0">
+            <input type="radio" [value]="0" [formControl]="$any(checkoutForm.get('paymentMethod'))" class="hidden">
+            <div class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-sm">
+              <span class="material-symbols-outlined text-blue-600">local_shipping</span>
+            </div>
+            <div>
+              <p class="font-black text-slate-800">Thanh toán khi nhận hàng (COD)</p>
+              <p class="text-xs text-slate-500 font-medium">Thanh toán bằng tiền mặt khi nhận gói hàng.</p>
+            </div>
+            <span *ngIf="checkoutForm.get('paymentMethod')?.value === 0"
+              class="material-symbols-outlined text-blue-600 ml-auto">check_circle</span>
+          </label>
+
+          <label class="flex items-center gap-4 p-5 rounded-3xl border-2 cursor-pointer transition-all"
+            [class.border-blue-600]="checkoutForm.get('paymentMethod')?.value === 4"
+            [class.bg-blue-50]="checkoutForm.get('paymentMethod')?.value === 4"
+            [class.border-slate-100]="checkoutForm.get('paymentMethod')?.value !== 4">
+            <input type="radio" [value]="4" [formControl]="$any(checkoutForm.get('paymentMethod'))" class="hidden">
+            <div class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-sm overflow-hidden p-2">
+              <img src="./imgs/payment/zalopay.jpeg" class="w-full h-full object-contain" alt="ZaloPay">
+            </div>
+            <div>
+              <p class="font-black text-slate-800">Ví ZaloPay</p>
+              <p class="text-xs text-slate-500 font-medium">Thanh toán qua ứng dụng ZaloPay hoặc QR code.</p>
+            </div>
+            <span *ngIf="checkoutForm.get('paymentMethod')?.value === 4"
+              class="material-symbols-outlined text-blue-600 ml-auto">check_circle</span>
+          </label>
+
+          <label class="flex items-center gap-4 p-5 rounded-3xl border-2 cursor-pointer transition-all"
+            [class.border-blue-600]="checkoutForm.get('paymentMethod')?.value === 6"
+            [class.bg-blue-50]="checkoutForm.get('paymentMethod')?.value === 6"
+            [class.border-slate-100]="checkoutForm.get('paymentMethod')?.value !== 6">
+            <input type="radio" [value]="6" [formControl]="$any(checkoutForm.get('paymentMethod'))" class="hidden">
+            <div class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-sm overflow-hidden p-2">
+              <img src="/imgs/payment/vnpay.svg" class="w-full h-full object-contain" alt="VNPay">
+            </div>
+            <div>
+              <p class="font-black text-slate-800">Cổng thanh toán VNPAY</p>
+              <p class="text-xs text-slate-500 font-medium">Thanh toán qua Thẻ ATM, Visa, Master hoặc QR.</p>
+            </div>
+            <span *ngIf="checkoutForm.get('paymentMethod')?.value === 6"
+              class="material-symbols-outlined text-blue-600 ml-auto">check_circle</span>
+          </label>
+
+          <label class="flex items-center gap-4 p-5 rounded-3xl border-2 cursor-pointer transition-all opacity-60"
+            [class.border-blue-600]="checkoutForm.get('paymentMethod')?.value === 1"
+            [class.bg-blue-50]="checkoutForm.get('paymentMethod')?.value === 1"
+            [class.border-slate-100]="checkoutForm.get('paymentMethod')?.value !== 1">
+            <input type="radio" [value]="1" [formControl]="$any(checkoutForm.get('paymentMethod'))" class="hidden"
+              [disabled]="true">
+            <div class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-sm">
+              <span class="material-symbols-outlined text-blue-600">credit_card</span>
+            </div>
+            <div>
+              <p class="font-black text-slate-800">Thẻ Tín dụng / Ghi nợ (Sắp ra mắt)</p>
+              <p class="text-xs text-slate-500 font-medium">Visa, Mastercard, JCB.</p>
+            </div>
+          </label>
+        </div>
+      </section>
+    </div>
+
+    <!-- Right: Summary Sidebar -->
+    <aside class="lg:col-span-4 sticky top-28 h-fit">
+      <div class="bg-white rounded-[2.5rem] p-10 border border-slate-100 shadow-xl space-y-8">
+        <h2 class="text-2xl font-black text-slate-800">Tóm tắt đơn hàng</h2>
+
+        <!-- Cart Items Preview -->
+        <div class="space-y-6 max-h-[300px] overflow-y-auto pr-2 cproducNameustom-scrollbar">
+          <div *ngFor="let item of cart.items" class="flex gap-4">
+            <div class="w-16 h-20 bg-slate-50 rounded-xl overflow-hidden flex-shrink-0">
+              <img
+                [src]="(item.imageUrl || '').startsWith('http') ? item.imageUrl : 'https://localhost:44326/uploads/' + item.imageUrl"
+                class="w-full h-full object-cover">
+            </div>
+            <div class="flex-1 min-w-0">
+              <h4 class="font-bold text-sm text-slate-800 line-clamp-1">{{item.productName}}</h4>
+              <p class="text-xs text-slate-400 font-medium">x {{item.quantity}}</p>
+              <div class="flex items-center gap-2 mt-1">
+                <span *ngIf="item.originalPrice > item.price"
+                  class="text-[10px] text-slate-400 line-through font-bold">{{item.originalPrice |
+                  currency:'VND':'symbol':'1.0-0'}}</span>
+                <p class="text-sm font-black text-slate-700">{{item.price | currency:'VND':'symbol':'1.0-0'}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-4 pt-6 border-t border-slate-100">
+          <div class="flex justify-between text-slate-500 font-bold text-sm">
+            <span>Tạm tính</span>
+            <span class="text-slate-800">{{cart.totalPrice | currency:'VND':'symbol':'1.0-0'}}</span>
+          </div>
+          <div class="flex justify-between text-slate-500 font-bold text-sm">
+            <span>Phí vận chuyển</span>
+            <span class="text-green-600 uppercase tracking-widest text-[10px] font-black">Miễn phí</span>
+          </div>
+        </div>
+
+        <div class="pt-6 border-t border-slate-100 flex justify-between items-end">
+          <span class="font-black text-slate-800">Tổng cộng</span>
+          <span class="text-3xl font-black text-blue-600 tracking-tighter">{{cart.totalPrice |
+            currency:'VND':'symbol':'1.0-0'}}</span>
+        </div>
+
+        <button (click)="placeOrder()" [disabled]="isPlacingOrder || cart.items.length === 0"
+          class="w-full bg-blue-600 text-white py-5 rounded-3xl font-black text-lg shadow-xl hover:bg-blue-700 transition-all active:scale-95 disabled:opacity-50 flex items-center justify-center gap-3">
+          <span *ngIf="isPlacingOrder"
+            class="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+          {{ isPlacingOrder ? 'Đang xử lý...' : 'Đặt hàng ngay' }}
+        </button>
+      </div>
+    </aside>
+  </div>
+</main>

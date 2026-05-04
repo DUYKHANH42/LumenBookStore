@@ -1,0 +1,174 @@
+<div class="pt-28 pb-20 px-6 max-w-5xl mx-auto">
+  <header class="mb-10">
+    <h1 class="text-3xl font-black tracking-tighter text-slate-900">Lịch sử đơn hàng</h1>
+    <p class="text-slate-500 font-medium">Theo dõi các đơn hàng bạn đã đặt</p>
+  </header>
+
+  <div *ngIf="isLoading" class="flex justify-center py-20">
+    <div class="w-10 h-10 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+  </div>
+
+  <div *ngIf="!isLoading && orders.length === 0" class="glass-card p-20 text-center">
+    <span class="material-symbols-outlined text-6xl text-slate-300 mb-4">shopping_bag</span>
+    <h3 class="text-xl font-bold text-slate-800">Bạn chưa có đơn hàng nào</h3>
+    <p class="text-slate-500 mb-8">Hãy bắt đầu mua sắm ngay hôm nay!</p>
+    <a routerLink="/"
+      class="bg-blue-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-blue-700 shadow-lg transition-all">Mua sắm
+      ngay</a>
+  </div>
+
+  <div class="space-y-4">
+    <div *ngFor="let order of orders" (click)="viewDetail(order.id)"
+      class="glass-card p-6 flex flex-col md:flex-row md:items-center justify-between gap-6 border-slate-100 hover:border-blue-200 transition-all cursor-pointer group">
+      <div class="flex items-center gap-6">
+        <div
+          class="w-14 h-14 bg-slate-50 rounded-2xl flex items-center justify-center text-slate-400 group-hover:bg-blue-50 group-hover:text-blue-600 transition-colors">
+          <span class="material-symbols-outlined">receipt_long</span>
+        </div>
+        <div>
+          <h3 class="font-black text-slate-800 uppercase tracking-tight">Đơn hàng #{{order.orderNumber}}</h3>
+          <p class="text-xs text-slate-400 font-bold">{{order.createdAt | date:'dd/MM/yyyy HH:mm'}}</p>
+        </div>
+      </div>
+      <div class="flex items-center justify-between md:justify-end gap-10">
+        <div class="text-right">
+          <p class="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">Tổng cộng</p>
+          <p class="font-black text-slate-900">{{order.totalPrice | currency:'VND':'symbol':'1.0-0'}}</p>
+        </div>
+        <span
+          [class]="'px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-widest border ' + (order.status | orderStatus:'class')">
+          {{order.status | orderStatus}}
+        </span>
+        <span
+          class="material-symbols-outlined text-slate-300 group-hover:text-blue-600 transition-colors">chevron_right</span>
+      </div>
+    </div>
+  </div>
+  <!-- Pagination -->
+  <div *ngIf="totalPages > 1" class="mt-10 flex items-center justify-center gap-3">
+    <button (click)="loadOrders(currentPage - 1)" [disabled]="currentPage === 1"
+      class="w-12 h-12 rounded-2xl bg-white border border-slate-100 flex items-center justify-center text-slate-400 hover:text-blue-600 disabled:opacity-30 disabled:cursor-not-allowed transition-all shadow-sm">
+      <span class="material-symbols-outlined">chevron_left</span>
+    </button>
+
+    <div class="flex items-center gap-2">
+      <button *ngFor="let p of [].constructor(totalPages); let i = index" (click)="loadOrders(i + 1)"
+        [class]="'w-12 h-12 rounded-2xl font-black text-sm transition-all shadow-sm ' + 
+                       (currentPage === i + 1 ? 'bg-blue-600 text-white' : 'bg-white border border-slate-100 text-slate-400 hover:border-blue-600 hover:text-blue-600')">
+        {{i + 1}}
+      </button>
+    </div>
+
+    <button (click)="loadOrders(currentPage + 1)" [disabled]="currentPage === totalPages"
+      class="w-12 h-12 rounded-2xl bg-white border border-slate-100 flex items-center justify-center text-slate-400 hover:text-blue-600 disabled:opacity-30 disabled:cursor-not-allowed transition-all shadow-sm">
+      <span class="material-symbols-outlined">chevron_right</span>
+    </button>
+  </div>
+</div>
+
+<!-- Modal Order Detail -->
+<div *ngIf="showDetail && selectedOrder"
+  class="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-slate-900/40 backdrop-blur-sm">
+  <div
+    class="bg-white w-full max-w-3xl rounded-[3rem] shadow-2xl overflow-hidden animate-fade-in relative max-h-[90vh] flex flex-col">
+    <header class="p-8 border-b border-slate-50 flex justify-between items-center bg-slate-50/50">
+      <div>
+        <h2 class="text-2xl font-black text-slate-900">Chi tiết đơn hàng</h2>
+        <p class="text-sm text-slate-500 font-bold uppercase tracking-tight">Mã đơn: #{{selectedOrder.orderNumber}}</p>
+      </div>
+      <button (click)="closeDetail()"
+        class="w-10 h-10 bg-white shadow-sm border border-slate-100 rounded-full flex items-center justify-center text-slate-400 hover:text-slate-600 transition-all"><span
+          class="material-symbols-outlined">close</span></button>
+    </header>
+    <div class="flex-1 overflow-y-auto p-8 space-y-10 custom-scrollbar">
+      <!-- Order Progress (Simple) -->
+      <div class="flex items-center justify-between px-10 relative">
+        <div class="absolute top-1/2 left-10 right-10 h-1 bg-slate-100 -translate-y-1/2 -z-10"></div>
+        <div class="flex flex-col items-center gap-2">
+          <div class="w-8 h-8 rounded-full flex items-center justify-center text-xs font-black z-10"
+            [ngClass]="selectedOrder.status !== 'Cancelled' ? 'bg-blue-600 text-white' : 'bg-slate-200 text-slate-400'">
+            1</div>
+          <span class="text-[10px] font-black uppercase tracking-widest text-slate-400">Đã đặt</span>
+        </div>
+        <div class="flex flex-col items-center gap-2">
+          <div class="w-8 h-8 rounded-full flex items-center justify-center text-xs font-black z-10"
+            [ngClass]="['Paid', 'Shipping', 'Completed'].includes(selectedOrder.status) ? 'bg-blue-600 text-white' : 'bg-slate-200 text-slate-400'">
+            2</div>
+          <span class="text-[10px] font-black uppercase tracking-widest text-slate-400">Đã thanh toán</span>
+        </div>
+        <div class="flex flex-col items-center gap-2">
+          <div class="w-8 h-8 rounded-full flex items-center justify-center text-xs font-black z-10"
+            [ngClass]="['Shipping', 'Completed'].includes(selectedOrder.status) ? 'bg-blue-600 text-white' : 'bg-slate-200 text-slate-400'">
+            3</div>
+          <span class="text-[10px] font-black uppercase tracking-widest text-slate-400">Giao hàng</span>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-6">
+        <div class="space-y-6">
+          <div>
+            <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3">Người nhận</h4>
+            <p class="font-black text-slate-800">{{selectedOrder.shippingName}}</p>
+            <p class="text-sm text-slate-500 font-bold">{{selectedOrder.shippingPhone}}</p>
+          </div>
+          <div>
+            <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3">Địa chỉ giao hàng</h4>
+            <p class="text-sm text-slate-600 leading-relaxed font-medium">{{selectedOrder.shippingAddress}}</p>
+          </div>
+        </div>
+        <div class="space-y-6">
+          <div>
+            <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3">Trạng thái</h4>
+            <span
+              [class]="'px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-widest border ' + (selectedOrder.status | orderStatus:'class')">
+              {{selectedOrder.status | orderStatus}}
+            </span>
+          </div>
+          <div>
+            <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3">Ngày đặt</h4>
+            <p class="text-sm text-slate-600 font-black">{{selectedOrder.createdAt | date:'dd/MM/yyyy HH:mm'}}</p>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-6">Sản phẩm</h4>
+        <div class="space-y-4">
+          <div *ngFor="let item of selectedOrder.items"
+            class="flex items-center gap-6 p-4 rounded-3xl bg-slate-50/50 border border-slate-50">
+            <div class="w-16 h-20 rounded-2xl overflow-hidden flex-shrink-0 shadow-sm">
+              <img [src]="env.uploadUrl + '/' + item.imageUrl" class="w-full h-full object-cover">
+            </div>
+            <div class="flex-1 min-w-0">
+              <h5 class="font-black text-slate-800 truncate">{{item.productName}}</h5>
+              <p class="text-xs text-slate-400 font-bold">Số lượng: {{item.quantity}}</p>
+            </div>
+            <div class="text-right">
+              <p class="text-sm font-black text-slate-900">{{item.subTotal | currency:'VND':'symbol':'1.0-0'}}</p>
+              <p class="text-[10px] text-slate-400 font-bold">{{item.price | currency:'VND':'symbol':'1.0-0'}} / sản
+                phẩm</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="p-8 border-t border-slate-50 bg-slate-50/30 flex items-center justify-between">
+      <div>
+        <span class="text-xs font-black text-slate-400 uppercase tracking-widest block mb-1">Tổng thanh toán</span>
+        <span class="text-3xl font-black text-blue-600 tracking-tighter">{{selectedOrder.totalPrice |
+          currency:'VND':'symbol':'1.0-0'}}</span>
+      </div>
+
+      <div class="flex gap-4">
+        <button *ngIf="selectedOrder.status === 'Pending'" (click)="cancelOrder(selectedOrder.id)"
+          class="px-8 py-4 bg-rose-50 text-rose-600 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-rose-100 transition-all border border-rose-100">
+          Hủy đơn hàng
+        </button>
+
+        <button (click)="closeDetail()"
+          class="px-8 py-4 bg-slate-900 text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-slate-800 shadow-xl shadow-slate-900/20 transition-all">
+          Đóng
+        </button>
+      </div>
+    </footer>
+  </div>
+</div>

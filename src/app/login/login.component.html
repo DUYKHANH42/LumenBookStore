@@ -1,0 +1,71 @@
+<section class="min-h-screen flex items-center justify-center px-6 py-20 bg-soft-glow relative overflow-hidden">
+  <!-- Decorative Background -->
+  <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-100 rounded-full blur-[120px] opacity-40 -translate-y-1/2 translate-x-1/2"></div>
+  <div class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-purple-100 rounded-full blur-[120px] opacity-40 translate-y-1/2 -translate-x-1/2"></div>
+
+  <div class="max-w-md w-full relative z-10">
+    <!-- Card chính -->
+    <div class="glass-card p-10 md:p-14 border-white/60 shadow-ambient">
+      <div class="text-center mb-10">
+        <img src="/imgs/logo_sach.png" alt="Lumen Logo" class="h-20 w-auto mx-auto mb-8" />
+        <h1 class="text-3xl font-black tracking-tighter text-slate-900 mb-2">Chào mừng trở lại</h1>
+        <p class="text-slate-500 font-medium text-sm">Điền thông tin để khám phá tiếp hành trình tri thức.</p>
+      </div>
+
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-6">
+        <!-- Trường Email -->
+        <div class="space-y-2">
+          <label class="text-[10px] font-black uppercase tracking-widest text-slate-400 pl-1">Email</label>
+          <div class="relative group">
+            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-lg transition-colors group-focus-within:text-blue-600">mail</span>
+            <input type="email" formControlName="email" 
+              placeholder="example@gmail.com"
+              class="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 pl-12 pr-4 text-sm font-bold outline-none focus:border-blue-600 focus:bg-white transition-premium shadow-inner" />
+          </div>
+          <div *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.invalid" class="text-rose-500 text-[10px] font-bold pl-1 animate-fadeIn">
+            <span *ngIf="loginForm.get('email')?.errors?.['required']">Vui lòng nhập email.</span>
+            <span *ngIf="loginForm.get('email')?.errors?.['email']">Email không đúng định dạng.</span>
+          </div>
+        </div>
+
+        <!-- Trường Mật khẩu -->
+        <div class="space-y-2">
+          <div class="flex justify-between items-center pr-1">
+            <label class="text-[10px] font-black uppercase tracking-widest text-slate-400 pl-1">Mật khẩu</label>
+            <a routerLink="/forgot-password" class="text-[10px] font-black text-blue-600 uppercase tracking-widest hover:underline">Quên mật khẩu?</a>
+          </div>
+          <div class="relative group">
+            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-lg transition-colors group-focus-within:text-blue-600">lock</span>
+            <input type="password" formControlName="password" 
+              placeholder="••••••••"
+              class="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 pl-12 pr-4 text-sm font-bold outline-none focus:border-blue-600 focus:bg-white transition-premium shadow-inner" />
+          </div>
+          <div *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.invalid" class="text-rose-500 text-[10px] font-bold pl-1 animate-fadeIn">
+            <span *ngIf="loginForm.get('password')?.errors?.['required']">Vui lòng nhập mật khẩu.</span>
+            <span *ngIf="loginForm.get('password')?.errors?.['minlength']">Mật khẩu phải từ 6 ký tự trở lên.</span>
+          </div>
+        </div>
+
+        <!-- Thông báo lỗi tổng quát -->
+        <div *ngIf="errorMessage" class="bg-rose-50 border border-rose-100 text-rose-600 p-4 rounded-xl text-xs font-bold animate-fadeIn">
+          {{errorMessage}}
+        </div>
+
+        <!-- Nút Đăng nhập -->
+        <button type="submit" [disabled]="isLoading"
+          class="w-full py-4 bg-slate-900 text-white rounded-2xl font-black text-sm uppercase tracking-widest shadow-2xl hover:bg-blue-600 active:scale-95 transition-premium disabled:opacity-50 flex items-center justify-center gap-3">
+          <span *ngIf="!isLoading">Đăng nhập</span>
+          <span *ngIf="isLoading" class="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
+          <span class="material-symbols-outlined" *ngIf="!isLoading">login</span>
+        </button>
+
+        <div class="text-center pt-4">
+          <p class="text-slate-500 text-sm font-medium">
+            Chưa có tài khoản? 
+            <a routerLink="/register" class="text-blue-600 font-bold hover:underline">Đăng ký ngay</a>
+          </p>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
