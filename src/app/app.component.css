@@ -1,0 +1,8 @@
+.nav-link-refined.active::after {
+  width: 80% !important;
+}
+
+.nav-link-refined.active {
+  color: #2563eb !important;
+  transform: translateY(-1px);
+}

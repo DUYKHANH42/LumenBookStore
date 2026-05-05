@@ -14,11 +14,18 @@
             <span class="material-symbols-outlined text-blue-600">location_on</span>
             Địa chỉ nhận hàng
           </h2>
-          <button routerLink="/addresses" class="text-blue-600 font-bold text-sm hover:underline">Quản lý địa
-            chỉ</button>
+          <div class="flex items-center gap-3">
+            <button (click)="toggleAddNewAddress()" 
+                    class="px-4 py-2 rounded-xl text-sm font-black uppercase tracking-widest transition-all"
+                    [class.bg-blue-600]="isAddingNewAddress" [class.text-white]="isAddingNewAddress"
+                    [class.bg-slate-100]="!isAddingNewAddress" [class.text-slate-600]="!isAddingNewAddress">
+              {{ isAddingNewAddress ? 'Chọn địa chỉ có sẵn' : 'Thêm địa chỉ mới' }}
+            </button>
+            <button routerLink="/addresses" class="text-blue-600 font-bold text-sm hover:underline">Quản lý</button>
+          </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+        <div *ngIf="!isAddingNewAddress" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
           <div *ngFor="let addr of addresses" (click)="selectAddress(addr)"
             class="p-6 rounded-[2rem] border-2 cursor-pointer transition-all active:scale-[0.98]"
             [class.border-blue-600]="selectedAddressId === addr.id" [class.bg-blue-50]="selectedAddressId === addr.id"
@@ -35,25 +42,96 @@
           </div>
         </div>
 
-        <!-- Manual form fields (populated from selection) -->
+        <div *ngIf="isAddingNewAddress && addresses.length > 0" class="mb-8 p-4 bg-amber-50 border border-amber-100 rounded-2xl flex items-center gap-3">
+          <span class="material-symbols-outlined text-amber-600">info</span>
+          <p class="text-amber-800 text-[11px] font-bold">Bạn đang nhập địa chỉ mới cho đơn hàng này.</p>
+        </div>
+
+        <!-- Manual form fields -->
         <form [formGroup]="checkoutForm" class="space-y-6 pt-6 border-t border-slate-50">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div class="space-y-2">
-              <label class="text-[10px] font-black uppercase tracking-widest text-slate-400 px-1">Tên người nhận</label>
-              <input formControlName="shippingName" type="text"
-                class="w-full bg-slate-50 border border-slate-100 rounded-2xl px-5 py-4 font-bold text-slate-800 outline-none focus:border-blue-600 transition-all">
+              <input formControlName="shippingName" type="text" placeholder="Họ và tên"
+                class="w-full bg-slate-50 border border-slate-100 rounded-2xl px-5 py-4 font-bold text-slate-800 outline-none focus:border-blue-600 transition-all"
+                [class.border-rose-500]="checkoutForm.get('shippingName')?.touched && checkoutForm.get('shippingName')?.invalid">
+              <div *ngIf="checkoutForm.get('shippingName')?.touched && checkoutForm.get('shippingName')?.invalid" class="text-rose-500 text-[10px] font-bold pl-1 mt-1 animate-fadeIn">
+                Vui lòng nhập tên người nhận.
+              </div>
             </div>
             <div class="space-y-2">
-              <label class="text-[10px] font-black uppercase tracking-widest text-slate-400 px-1">Số điện thoại</label>
-              <input formControlName="shippingPhone" type="text"
-                class="w-full bg-slate-50 border border-slate-100 rounded-2xl px-5 py-4 font-bold text-slate-800 outline-none focus:border-blue-600 transition-all">
+              <input formControlName="shippingPhone" type="text" placeholder="Số điện thoại"
+                class="w-full bg-slate-50 border border-slate-100 rounded-2xl px-5 py-4 font-bold text-slate-800 outline-none focus:border-blue-600 transition-all"
+                [class.border-rose-500]="checkoutForm.get('shippingPhone')?.touched && checkoutForm.get('shippingPhone')?.invalid">
+              <div *ngIf="checkoutForm.get('shippingPhone')?.touched && checkoutForm.get('shippingPhone')?.invalid" class="text-rose-500 text-[10px] font-bold pl-1 mt-1 animate-fadeIn">
+                <span *ngIf="checkoutForm.get('shippingPhone')?.errors?.['required']">Vui lòng nhập số điện thoại.</span>
+                <span *ngIf="checkoutForm.get('shippingPhone')?.errors?.['pattern']">Số điện thoại phải có 10 chữ số.</span>
+              </div>
             </div>
           </div>
+
+          <!-- New Address Inputs (Provincial) -->
+          <div *ngIf="isAddingNewAddress" class="space-y-6 animate-fadeIn">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 relative">
+              <!-- Province -->
+              <div class="space-y-2 relative">
+                <label class="text-[10px] font-black uppercase tracking-widest text-slate-400 px-1">Tỉnh / Thành phố</label>
+                <div class="relative cursor-pointer" (click)="toggleProvinceDropdown()">
+                  <div class="w-full bg-slate-50 border border-slate-100 rounded-2xl px-5 py-4 font-bold text-slate-800 outline-none transition-all"
+                       [class.border-blue-600]="isProvinceDropdownOpen">
+                    {{ selectedProvince ? selectedProvince.name : 'Chọn Tỉnh/Thành' }}
+                  </div>
+                  <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none transition-transform"
+                        [class.rotate-180]="isProvinceDropdownOpen">expand_more</span>
+                </div>
+                <div *ngIf="isProvinceDropdownOpen" class="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-2xl border border-slate-100 z-[210] max-h-48 overflow-y-auto custom-scrollbar p-2">
+                  <div *ngFor="let p of provinces" (click)="selectProvince(p); $event.stopPropagation()"
+                       class="px-4 py-2 rounded-xl hover:bg-blue-50 hover:text-blue-600 font-bold text-sm cursor-pointer transition-colors">
+                    {{p.name}}
+                  </div>
+                </div>
+              </div>
+
+              <!-- Ward -->
+              <div class="space-y-2 relative">
+                <label class="text-[10px] font-black uppercase tracking-widest text-slate-400 px-1">Phường / Xã</label>
+                <div class="relative cursor-pointer" (click)="toggleWardDropdown()" [class.opacity-50]="wards.length === 0">
+                  <div class="w-full bg-slate-50 border border-slate-100 rounded-2xl px-5 py-4 font-bold text-slate-800 outline-none transition-all"
+                       [class.border-blue-600]="isWardDropdownOpen">
+                    {{ selectedWard ? selectedWard.name : 'Chọn Phường/Xã' }}
+                  </div>
+                  <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none transition-transform"
+                        [class.rotate-180]="isWardDropdownOpen">expand_more</span>
+                </div>
+                <div *ngIf="isWardDropdownOpen && wards.length > 0" class="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-2xl border border-slate-100 z-[210] max-h-48 overflow-y-auto custom-scrollbar p-2">
+                  <div *ngFor="let w of wards" (click)="selectWard(w); $event.stopPropagation()"
+                       class="px-4 py-2 rounded-xl hover:bg-blue-50 hover:text-blue-600 font-bold text-sm cursor-pointer transition-colors">
+                    {{w.name}}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="space-y-2">
+              <input formControlName="street" type="text" (input)="onStreetChange()" placeholder="VD: 123 Lê Lợi..."
+                class="w-full bg-slate-50 border border-slate-100 rounded-2xl px-5 py-4 font-bold text-slate-800 outline-none focus:border-blue-600 transition-all"
+                [class.border-rose-500]="checkoutForm.get('street')?.touched && checkoutForm.get('street')?.invalid">
+              <div *ngIf="checkoutForm.get('street')?.touched && checkoutForm.get('street')?.invalid" class="text-rose-500 text-[10px] font-bold pl-1 mt-1 animate-fadeIn">
+                Vui lòng nhập số nhà và tên đường.
+              </div>
+            </div>
+          </div>
+
+          <!-- Final Address Line (Read-only if Adding New, editable if existing) -->
           <div class="space-y-2">
-            <label class="text-[10px] font-black uppercase tracking-widest text-slate-400 px-1">Địa chỉ giao
-              hàng</label>
-            <textarea formControlName="shippingAddress" rows="2"
-              class="w-full bg-slate-50 border border-slate-100 rounded-2xl px-5 py-4 font-bold text-slate-800 outline-none focus:border-blue-600 transition-all resize-none"></textarea>
+            <label class="text-[10px] font-black uppercase tracking-widest text-slate-400 px-1">Địa chỉ giao hàng đầy đủ</label>
+            <textarea formControlName="shippingAddress" rows="2" [readOnly]="isAddingNewAddress"
+              class="w-full bg-slate-50 border border-slate-100 rounded-2xl px-5 py-4 font-bold text-slate-800 outline-none focus:border-blue-600 transition-all resize-none"
+              [class.bg-slate-100]="isAddingNewAddress" [class.text-slate-500]="isAddingNewAddress"
+              [class.border-rose-500]="checkoutForm.get('shippingAddress')?.touched && checkoutForm.get('shippingAddress')?.invalid"></textarea>
+            <div *ngIf="checkoutForm.get('shippingAddress')?.touched && checkoutForm.get('shippingAddress')?.invalid" class="text-rose-500 text-[10px] font-bold pl-1 mt-1 animate-fadeIn">
+              Vui lòng chọn hoặc nhập đầy đủ địa chỉ giao hàng.
+            </div>
+            <p *ngIf="isAddingNewAddress" class="text-[9px] font-bold text-blue-600 px-1">Địa chỉ này sẽ được tự động cập nhật từ các lựa chọn bên trên.</p>
           </div>
         </form>
       </section>

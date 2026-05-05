@@ -1,51 +1,70 @@
-<div *ngIf="toast$ | async as toast" 
+<div *ngIf="toast$ | async as toast"
   class="fixed top-8 left-1/2 -translate-x-1/2 z-[9999] pointer-events-none transition-all duration-500"
-  [class.opacity-0]="!toast.show"
-  [class.-translate-y-4]="!toast.show"
-  [class.opacity-100]="toast.show"
+  [class.opacity-0]="!toast.show" [class.-translate-y-4]="!toast.show" [class.opacity-100]="toast.show"
   [class.translate-y-0]="toast.show">
-  <div *ngIf="toast.show" class="flex items-center gap-4 px-6 py-4 rounded-[2rem] shadow-2xl backdrop-blur-xl border min-w-[320px] pointer-events-auto" [ngClass]="{'bg-white/90 border-emerald-100': toast.type === 'success', 'bg-rose-50/90 border-rose-100': toast.type === 'error', 'bg-amber-50/90 border-amber-100': toast.type === 'warning', 'bg-white/90 border-blue-100': toast.type === 'info'}">
-    <div class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0" [class.bg-emerald-500]="toast.type === 'success'" [class.bg-rose-500]="toast.type === 'error'" [class.bg-amber-500]="toast.type === 'warning'" [class.bg-blue-500]="toast.type === 'info'">
-      <span class="material-symbols-outlined text-white text-xl">{{ toast.type === 'success' ? 'check_circle' : toast.type === 'error' ? 'error' : toast.type === 'warning' ? 'warning' : 'info' }}</span>
+  <div *ngIf="toast.show"
+    class="flex items-center gap-4 px-6 py-4 rounded-[2rem] shadow-2xl backdrop-blur-xl border min-w-[320px] pointer-events-auto"
+    [ngClass]="{'bg-white/90 border-emerald-100': toast.type === 'success', 'bg-rose-50/90 border-rose-100': toast.type === 'error', 'bg-amber-50/90 border-amber-100': toast.type === 'warning', 'bg-white/90 border-blue-100': toast.type === 'info'}">
+    <div class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0"
+      [class.bg-emerald-500]="toast.type === 'success'" [class.bg-rose-500]="toast.type === 'error'"
+      [class.bg-amber-500]="toast.type === 'warning'" [class.bg-blue-500]="toast.type === 'info'">
+      <span class="material-symbols-outlined text-white text-xl">{{ toast.type === 'success' ? 'check_circle' :
+        toast.type === 'error' ? 'error' : toast.type === 'warning' ? 'warning' : 'info' }}</span>
     </div>
     <div class="flex-1 pr-6">
-      <p class="text-[10px] font-black uppercase tracking-widest mb-0.5" [class.text-emerald-600]="toast.type === 'success'" [class.text-rose-600]="toast.type === 'error'">{{ toast.type === 'success' ? 'Thành công' : toast.type === 'error' ? 'Thất bại' : 'Thông báo' }}</p>
+      <p class="text-[10px] font-black uppercase tracking-widest mb-0.5"
+        [class.text-emerald-600]="toast.type === 'success'" [class.text-rose-600]="toast.type === 'error'">{{ toast.type
+        === 'success' ? 'Thành công' : toast.type === 'error' ? 'Thất bại' : 'Thông báo' }}</p>
       <p class="text-xs font-bold text-slate-800 leading-tight">{{toast.message}}</p>
     </div>
-    <button (click)="toastService.hide()" class="text-slate-300 hover:text-slate-600 outline-none border-none bg-transparent"><span class="material-symbols-outlined text-lg">close</span></button>
+    <button (click)="toastService.hide()"
+      class="text-slate-300 hover:text-slate-600 outline-none border-none bg-transparent"><span
+        class="material-symbols-outlined text-lg">close</span></button>
   </div>
 </div>
 
-<nav class="fixed top-0 w-full z-[100] bg-white/80 backdrop-blur-xl border-b border-white/20 shadow-sm transition-all duration-300">
+<nav
+  class="fixed top-0 w-full z-[100] bg-white/80 backdrop-blur-xl border-b border-white/20 shadow-sm transition-all duration-300">
   <div class="border-b border-slate-100">
     <div class="flex justify-between items-center px-6 md:px-8 py-3 max-w-7xl mx-auto">
       <a routerLink="/" class="flex items-center group py-1">
-        <img src="/imgs/logo_sach.png" alt="Lumen Logo" class="h-20 w-auto object-contain transition-transform group-hover:scale-105" />
+        <img src="/imgs/logo_sach.png" alt="Lumen Logo"
+          class="h-20 w-auto object-contain transition-transform group-hover:scale-105" />
       </a>
 
       <div class="hidden md:flex flex-1 max-w-md mx-8 relative">
         <div class="relative w-full">
-          <input type="text" [(ngModel)]="searchTerm" (input)="onSearchInput()" (keyup.enter)="onKeywordSearch()" (blur)="closeSearch()" placeholder="Tìm kiếm sản phẩm..." class="w-full bg-slate-100 rounded-full py-2.5 px-6 pl-12 text-sm outline-none focus:ring-2 focus:ring-blue-500/20 transition-all" />
-          <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-lg">search</span>
+          <input type="text" [(ngModel)]="searchTerm" (input)="onSearchInput()" (keyup.enter)="onKeywordSearch()"
+            (blur)="closeSearch()" placeholder="Tìm kiếm sản phẩm..."
+            class="w-full bg-slate-100 rounded-full py-2.5 px-6 pl-12 text-sm outline-none focus:ring-2 focus:ring-blue-500/20 transition-all" />
+          <span
+            class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-lg">search</span>
 
-          <div *ngIf="suggestions.length > 0" class="absolute top-full left-0 right-0 mt-3 bg-white/90 backdrop-blur-xl rounded-[2rem] shadow-2xl border border-slate-100 overflow-hidden z-[200]">
+          <div *ngIf="suggestions.length > 0"
+            class="absolute top-full left-0 right-0 mt-3 bg-white/95 backdrop-blur-xl rounded-[2.5rem] shadow-2xl border border-slate-100 overflow-hidden z-[200]">
             <div class="p-4 border-b border-slate-50 flex justify-between items-center bg-slate-50/50">
               <span class="text-[10px] font-black uppercase tracking-widest text-slate-400">Gợi ý sản phẩm</span>
               <span class="text-[10px] font-bold text-blue-600">Tìm thấy {{suggestions.length}} kết quả</span>
             </div>
             <div class="max-h-[400px] overflow-y-auto py-2">
-              <div *ngFor="let product of suggestions" (mousedown)="onSelectProduct(product.id)" class="flex items-center gap-4 px-4 py-3 hover:bg-blue-50 cursor-pointer transition-all group">
+              <div *ngFor="let product of suggestions" (mousedown)="onSelectProduct(product.id)"
+                class="flex items-center gap-4 px-4 py-3 hover:bg-blue-50 cursor-pointer transition-all group">
                 <div class="w-12 h-16 rounded-lg overflow-hidden flex-shrink-0 shadow-sm">
-                  <img [src]="'https://bookstore-asp-nc.onrender.com/uploads/' + product.imageUrl" class="w-full h-full object-cover transition-transform group-hover:scale-110" />
+                  <img [src]="'https://bookstore-asp-nc.onrender.com/uploads/' + product.imageUrl"
+                    class="w-full h-full object-cover transition-transform group-hover:scale-110" />
                 </div>
                 <div class="flex-1 min-w-0">
-                  <h4 class="text-sm font-bold text-slate-800 truncate mb-1 group-hover:text-blue-600 transition-colors">{{product.name}}</h4>
+                  <h4
+                    class="text-sm font-bold text-slate-800 truncate mb-1 group-hover:text-blue-600 transition-colors">
+                    {{product.name}}</h4>
                   <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">{{product.brand}}</p>
                 </div>
-                <div class="text-xs font-black text-slate-900 pr-2">{{ (product.discountPrice || product.price) | currency:'VND':'symbol':'1.0-0' }}</div>
+                <div class="text-xs font-black text-slate-900 pr-2">{{ (product.discountPrice || product.price) |
+                  currency:'VND':'symbol':'1.0-0' }}</div>
               </div>
             </div>
-            <div (mousedown)="onKeywordSearch()" class="p-4 bg-blue-600 text-white text-center cursor-pointer hover:bg-blue-700">
+            <div (mousedown)="onKeywordSearch()"
+              class="p-4 bg-blue-600 text-white text-center cursor-pointer hover:bg-blue-700">
               <span class="text-xs font-black uppercase tracking-widest">Xem tất cả cho "{{searchTerm}}"</span>
             </div>
           </div>
@@ -54,29 +73,39 @@
 
       <div class="flex items-center space-x-2 md:space-x-6">
         <div class="hidden lg:flex items-center space-x-6 mr-4 border-r border-slate-200 pr-6">
-          <a class="nav-link-refined text-slate-600 text-sm" routerLink="/" routerLinkActive="text-blue-600"><span class="material-symbols-outlined text-lg">home</span> Trang chủ</a>
+          <a class="nav-link-refined text-slate-600 text-sm" routerLink="/" routerLinkActive="text-blue-600"><span
+              class="material-symbols-outlined text-lg">home</span> Trang chủ</a>
         </div>
         <button routerLink="/cart" class="p-2 text-slate-700 relative group">
-          <span class="material-symbols-outlined text-2xl group-hover:scale-110 transition-transform">shopping_cart</span>
-          <span *ngIf="cart$ | async as cart" class="absolute top-0 right-0 w-4 h-4 bg-blue-600 text-white text-[9px] font-bold flex items-center justify-center rounded-full shadow-lg">{{ cart.totalItems }}</span>
+          <span
+            class="material-symbols-outlined text-2xl group-hover:scale-110 transition-transform">shopping_cart</span>
+          <span *ngIf="cart$ | async as cart"
+            class="absolute top-0 right-0 w-4 h-4 bg-blue-600 text-white text-[9px] font-bold flex items-center justify-center rounded-full shadow-lg">{{
+            cart.totalItems }}</span>
         </button>
         <ng-container *ngIf="authService.currentUser$ | async as user; else guestMenu">
           <div class="relative group flex items-center gap-3">
             <div class="hidden md:flex flex-col items-end">
-              <span class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] leading-none mb-1">Thành viên</span>
+              <span class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] leading-none mb-1">Thành
+                viên</span>
               <span class="text-xs font-black text-slate-700">{{user.fullName}}</span>
             </div>
-            <button class="flex items-center justify-center p-0.5 bg-gradient-to-tr from-blue-600 to-purple-600 rounded-full shadow-lg">
-              <img [src]="user.avtUrl ? authService.getFullImageUrl(user.avtUrl) : 'https://ui-avatars.com/api/?name=' + (user.fullName || 'User') + '&background=random&color=fff&bold=true'" [alt]="user.fullName" class="w-9 h-9 rounded-full object-cover border-2 border-white" />
+            <button
+              class="flex items-center justify-center p-0.5 bg-gradient-to-tr from-blue-600 to-purple-600 rounded-full shadow-lg">
+              <img
+                [src]="user.avtUrl ? authService.getFullImageUrl(user.avtUrl) : 'https://ui-avatars.com/api/?name=' + (user.fullName || 'User') + '&background=random&color=fff&bold=true'"
+                [alt]="user.fullName" class="w-9 h-9 rounded-full object-cover border-2 border-white" />
             </button>
-            <div class="absolute right-0 top-full mt-3 w-64 bg-white/95 backdrop-blur-xl rounded-[2.5rem] shadow-2xl border border-slate-100 p-3 opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all z-[150] dropdown-gap-fix">
+            <div
+              class="absolute right-0 top-full mt-3 w-64 bg-white/95 backdrop-blur-xl rounded-[2.5rem] shadow-2xl border border-slate-100 p-3 opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all z-[150] dropdown-gap-fix">
               <div class="px-4 py-4 border-b border-slate-50 mb-2">
                 <p class="text-[10px] font-black uppercase tracking-[0.2em] text-blue-600 mb-1">Xin chào,</p>
                 <p class="text-sm font-black text-slate-800 truncate">{{user.fullName}}</p>
               </div>
 
               <!-- Admin Link -->
-              <a *ngIf="user.roles?.includes('Admin')" href="https://bookstore-asp-nc.onrender.com/Admin" class="flex items-center gap-3 p-3 hover:bg-slate-100 rounded-2xl transition-all border-b border-slate-50 mb-1">
+              <a *ngIf="user.roles?.includes('Admin')" href="https://bookstore-asp-nc.onrender.com/Admin"
+                class="flex items-center gap-3 p-3 hover:bg-slate-100 rounded-2xl transition-all border-b border-slate-50 mb-1">
                 <span class="material-symbols-outlined text-slate-900">admin_panel_settings</span>
                 <span class="text-xs font-black text-slate-900 uppercase tracking-widest">Quản trị hệ thống</span>
               </a>
@@ -85,15 +114,18 @@
                 <span class="material-symbols-outlined text-blue-600">account_circle</span>
                 <span class="text-xs font-bold text-slate-700">Trang cá nhân</span>
               </a>
-              <a routerLink="/favorites" class="flex items-center gap-3 p-3 hover:bg-rose-50 rounded-2xl transition-all">
-                <span class="material-symbols-outlined text-red-600" style="font-variation-settings: 'FILL' 1;">favorite</span>
+              <a routerLink="/favorites"
+                class="flex items-center gap-3 p-3 hover:bg-rose-50 rounded-2xl transition-all">
+                <span class="material-symbols-outlined text-red-600"
+                  style="font-variation-settings: 'FILL' 1;">favorite</span>
                 <span class="text-xs font-bold text-slate-700">Yêu thích</span>
               </a>
               <a routerLink="/orders" class="flex items-center gap-3 p-3 hover:bg-blue-50 rounded-2xl transition-all">
                 <span class="material-symbols-outlined text-slate-400">package_2</span>
                 <span class="text-xs font-bold text-slate-700">Đơn hàng</span>
               </a>
-              <button (click)="logout()" class="w-full flex items-center gap-3 p-3 hover:bg-rose-50 rounded-2xl text-rose-600 transition-all">
+              <button (click)="logout()"
+                class="w-full flex items-center gap-3 p-3 hover:bg-rose-50 rounded-2xl text-rose-600 transition-all">
                 <span class="material-symbols-outlined">logout</span>
                 <span class="text-xs font-bold uppercase tracking-widest">Đăng xuất</span>
               </button>
@@ -102,25 +134,45 @@
         </ng-container>
         <ng-template #guestMenu>
           <div class="hidden sm:flex items-center gap-4">
-            <a routerLink="/login" class="text-xs font-black uppercase tracking-widest text-slate-600 hover:text-blue-600 transition-colors">Đăng nhập</a>
-            <a routerLink="/register" class="px-6 py-2.5 bg-slate-900 text-white rounded-full text-xs font-black uppercase tracking-widest shadow-lg hover:bg-blue-600 transition-all">Đăng ký</a>
+            <a routerLink="/login"
+              class="text-xs font-black uppercase tracking-widest text-slate-600 hover:text-blue-600 transition-colors">Đăng
+              nhập</a>
+            <a routerLink="/register"
+              class="px-6 py-2.5 bg-slate-900 text-white rounded-full text-xs font-black uppercase tracking-widest shadow-lg hover:bg-blue-600 transition-all">Đăng
+              ký</a>
           </div>
         </ng-template>
-        <button (click)="toggleMenu()" class="lg:hidden p-2 text-slate-700"><span class="material-symbols-outlined text-3xl">{{ isMenuOpen ? 'close' : 'menu' }}</span></button>
+        <button (click)="toggleMenu()" class="lg:hidden p-2 text-slate-700"><span
+            class="material-symbols-outlined text-3xl">{{ isMenuOpen ? 'close' : 'menu' }}</span></button>
       </div>
     </div>
   </div>
 
-  <div class="bg-white/50">
-    <div class="max-w-7xl mx-auto px-6 md:px-8 py-2 overflow-x-auto hide-scrollbar">
-      <div class="flex items-center space-x-8 lg:space-x-12">
-        <div *ngFor="let cat of navCategories" class="relative group flex-shrink-0">
-          <a [routerLink]="['/category', cat.id]" class="text-slate-600 text-xs font-bold tracking-widest uppercase py-2 hover:text-blue-600 transition-colors flex items-center gap-2">
-            <span class="material-symbols-outlined text-base">{{getCategoryIcon(cat.name)}}</span> {{cat.name}}
+  <div class="bg-white border-t border-slate-50">
+    <div class="max-w-7xl mx-auto px-6 md:px-8">
+      <div class="flex items-center space-x-8 lg:space-x-12 h-14">
+        <div *ngFor="let cat of navCategories" class="relative group h-full flex items-center flex-shrink-0">
+          <a [routerLink]="['/category', cat.id]" routerLinkActive="active"
+            class="nav-link-refined text-slate-500 text-[11px] font-black tracking-[0.05em] uppercase h-full flex items-center gap-2.5 px-4 hover:text-blue-600 hover:bg-blue-50/30 transition-all">
+            <span
+              class="material-symbols-outlined text-[20px] transition-transform group-hover:rotate-12">{{getCategoryIcon(cat.name)}}</span>
+            {{cat.name}}
           </a>
-          <div class="absolute top-full left-0 mt-1 w-52 bg-white shadow-2xl rounded-2xl border border-slate-100 invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-all z-[110] dropdown-gap-fix">
-            <div class="p-2 space-y-0.5">
-              <a *ngFor="let sub of cat.subCategories" [routerLink]="['/subcategory', sub.id]" class="block px-4 py-2 text-[13px] text-slate-600 hover:bg-blue-600 hover:text-white rounded-xl transition-all">{{sub.name}}</a>
+
+          <!-- Premium Subcategory Dropdown -->
+          <div *ngIf="cat.subCategories && cat.subCategories.length > 0"
+            class="absolute top-full left-0 mt-0 w-64 bg-white shadow-[0_20px_50px_rgba(0,0,0,0.15)] rounded-3xl border border-slate-50 invisible group-hover:visible opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300 z-[150] p-3 dropdown-gap-fix">
+            <div class="mb-2 px-4 py-2 border-b border-slate-50">
+              <span class="text-[9px] font-black uppercase tracking-widest text-slate-400">Khám phá {{cat.name}}</span>
+            </div>
+            <div class="space-y-1">
+              <a *ngFor="let sub of cat.subCategories" [routerLink]="['/subcategory', sub.id]"
+                routerLinkActive="bg-blue-50 text-blue-600 active"
+                class="flex items-center justify-between px-4 py-2.5 text-[13px] font-bold text-slate-600 hover:bg-blue-600 hover:text-white rounded-2xl transition-all group/sub">
+                {{sub.name}}
+                <span
+                  class="material-symbols-outlined text-sm opacity-0 group-hover/sub:opacity-100 transition-all -translate-x-2 group-hover/sub:translate-x-0">chevron_right</span>
+              </a>
             </div>
           </div>
         </div>
@@ -128,6 +180,57 @@
     </div>
   </div>
 </nav>
+
+<!-- Mobile Menu Overlay -->
+<div *ngIf="isMenuOpen" 
+     class="fixed inset-0 z-[150] bg-slate-900/60 backdrop-blur-md lg:hidden animate-fadeIn"
+     (click)="toggleMenu()">
+  <div class="absolute right-0 top-0 bottom-0 w-80 bg-white shadow-2xl p-8 overflow-y-auto custom-scrollbar" (click)="$event.stopPropagation()">
+    <div class="flex justify-between items-center mb-10">
+      <img src="/imgs/logo_sach.png" alt="Logo" class="h-16 w-auto" />
+      <button (click)="toggleMenu()" class="w-10 h-10 rounded-full flex items-center justify-center bg-slate-50 text-slate-400 hover:bg-slate-900 hover:text-white transition-all">
+        <span class="material-symbols-outlined text-2xl">close</span>
+      </button>
+    </div>
+    
+    <div class="space-y-10">
+      <!-- Search on Mobile -->
+      <div class="relative">
+        <input type="text" [(ngModel)]="searchTerm" (keyup.enter)="onKeywordSearch(); toggleMenu()" placeholder="Tìm kiếm..." class="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 px-6 pl-12 text-sm outline-none focus:border-blue-600 transition-all" />
+        <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+      </div>
+
+      <div>
+        <h3 class="text-[10px] font-black uppercase tracking-[0.2em] text-blue-600 mb-6 px-2">Menu Chính</h3>
+        <nav class="space-y-2">
+          <a routerLink="/" (click)="toggleMenu()" routerLinkActive="bg-blue-50 text-blue-600" [routerLinkActiveOptions]="{exact: true}" class="flex items-center gap-4 p-4 rounded-2xl text-slate-700 font-black text-xs uppercase tracking-widest hover:bg-blue-50 transition-all">
+            <span class="material-symbols-outlined">home</span> Trang chủ
+          </a>
+          <a routerLink="/cart" (click)="toggleMenu()" routerLinkActive="bg-blue-50 text-blue-600" class="flex items-center gap-4 p-4 rounded-2xl text-slate-700 font-black text-xs uppercase tracking-widest hover:bg-blue-50 transition-all">
+            <span class="material-symbols-outlined">shopping_cart</span> Giỏ hàng
+          </a>
+        </nav>
+      </div>
+      
+      <div>
+        <h3 class="text-[10px] font-black uppercase tracking-[0.2em] text-blue-600 mb-6 px-2">Danh mục</h3>
+        <div class="space-y-2">
+          <div *ngFor="let cat of navCategories" class="space-y-1">
+            <a [routerLink]="['/category', cat.id]" (click)="toggleMenu()" routerLinkActive="bg-blue-50 text-blue-600" class="flex items-center gap-4 p-4 rounded-2xl text-slate-700 font-black text-xs uppercase tracking-widest hover:bg-blue-50 transition-all">
+              <span class="material-symbols-outlined text-blue-600">{{getCategoryIcon(cat.name)}}</span> {{cat.name}}
+            </a>
+            <div *ngIf="cat.subCategories && cat.subCategories.length > 0" class="pl-12 space-y-1">
+              <a *ngFor="let sub of cat.subCategories" [routerLink]="['/subcategory', sub.id]" (click)="toggleMenu()" routerLinkActive="text-blue-600 font-black" class="block py-2 text-[13px] text-slate-500 font-bold hover:text-blue-600 transition-all">
+                {{sub.name}}
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <main class="pt-32 md:pt-40 min-h-screen">
   <router-outlet></router-outlet>
@@ -137,11 +240,13 @@
   <div class="grid grid-cols-2 lg:grid-cols-4 gap-16 max-w-7xl mx-auto">
     <div class="col-span-2 lg:col-span-1">
       <img src="/imgs/logo_sach.png" alt="Lumen Logo" class="h-28 w-auto object-contain mb-10" />
-      <p class="text-slate-500 text-base font-medium leading-relaxed max-w-xs">© 2024 Lumen Inventory Elite. Tinh nghệ của tri thức và sáng tạo.</p>
+      <p class="text-slate-500 text-base font-medium leading-relaxed max-w-xs">© 2024 Lumen Inventory Elite. Tinh nghệ
+        của tri thức và sáng tạo.</p>
     </div>
     <div>
       <h4 class="text-slate-900 font-black text-xs uppercase tracking-[0.2em] mb-8">Showrooms</h4>
-      <p class="text-slate-500 text-sm font-medium leading-relaxed">Quận 1, TP. Hồ Chí Minh <br /> Quận Hoàn Kiếm, Hà Nội</p>
+      <p class="text-slate-500 text-sm font-medium leading-relaxed">Quận 1, TP. Hồ Chí Minh <br /> Quận Hoàn Kiếm, Hà
+        Nội</p>
     </div>
     <div>
       <h4 class="text-slate-900 font-black text-xs uppercase tracking-[0.2em] mb-8">Liên hệ</h4>

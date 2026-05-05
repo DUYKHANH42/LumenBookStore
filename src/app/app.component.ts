@@ -110,15 +110,17 @@ export class AppComponent implements OnInit {
   }
 
   getCategoryIcon(name: string): string {
-    const iconMap: { [key: string]: string } = {
-      'Văn Học': 'history_edu',
-      'Khoa Học & Công Nghệ': 'biotech',
-      'Kỹ Năng Sống': 'psychology',
-      'Kinh Tế': 'payments',
-      'Nghệ Thuật': 'palette',
-      'Sổ Tay': 'auto_stories',
-      'Văn Phòng Phẩm': 'edit_note'
-    };
-    return iconMap[name] || 'inventory_2';
+    const normalized = name.toLowerCase().trim();
+    if (normalized.includes('văn học')) return 'history_edu';
+    if (normalized.includes('khoa học') || normalized.includes('công nghệ')) return 'biotech';
+    if (normalized.includes('kỹ năng')) return 'psychology';
+    if (normalized.includes('kinh tế')) return 'payments';
+    if (normalized.includes('nghệ thuật')) return 'palette';
+    if (normalized.includes('sổ tay')) return 'auto_stories';
+    if (normalized.includes('văn phòng phẩm') || normalized.includes('quà tặng')) return 'edit_note';
+    if (normalized.includes('ngoại ngữ')) return 'language';
+    if (normalized.includes('thiếu nhi')) return 'child_care';
+    if (normalized.includes('tâm lý')) return 'self_improvement';
+    return 'inventory_2';
   }
 }

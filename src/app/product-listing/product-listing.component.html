@@ -24,11 +24,24 @@
       <section class="glass-card p-8 border-white/40">
         <h3 class="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-8 items-center gap-2 flex"><span
             class="material-symbols-outlined text-sm">filter_list</span> Danh mục liên quan</h3>
-        <div class="space-y-2">
+        <div class="space-y-1.5">
+          <!-- Link to Category (All) -->
+          <div *ngIf="parentCategory || (currentType === 'category' && currentId !== 0)" class="group">
+            <a [routerLink]="['/category', parentCategory ? parentCategory.id : currentId]"
+               routerLinkActive="bg-blue-600 text-white shadow-md"
+               [routerLinkActiveOptions]="{exact: true}"
+               class="flex items-center gap-4 py-3 px-4 rounded-2xl transition-all border border-transparent hover:bg-white text-slate-600">
+              <span class="material-symbols-outlined text-sm">category</span>
+              <span class="text-sm font-bold">Tất cả sản phẩm</span>
+            </a>
+          </div>
+
+          <!-- Subcategories -->
           <div *ngFor="let sub of subCategories" class="group">
             <a [routerLink]="['/subcategory', sub.id]"
-              class="flex items-center gap-4 py-3 px-4 rounded-2xl transition-all hover:bg-white"
-              [class.bg-white]="currentId === sub.id && currentType === 'subcategory'">
+              routerLinkActive="bg-blue-600 text-white shadow-md"
+              [routerLinkActiveOptions]="{exact: true}"
+              class="flex items-center gap-4 py-3 px-4 rounded-2xl transition-all border border-transparent hover:bg-white text-slate-600">
               <span class="text-sm font-bold">{{sub.name}}</span>
             </a>
           </div>

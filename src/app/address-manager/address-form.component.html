@@ -4,13 +4,22 @@
   <div class="space-y-2">
     <label class="text-xs font-black uppercase tracking-widest text-slate-400 px-1">Họ tên người nhận</label>
     <input formControlName="receiverName" type="text" placeholder="Nhập họ tên"
-           class="w-full bg-slate-50 border border-slate-100 rounded-2xl px-5 py-4 font-bold text-slate-800 outline-none focus:border-blue-600 transition-all">
+           class="w-full bg-slate-50 border border-slate-100 rounded-2xl px-5 py-4 font-bold text-slate-800 outline-none focus:border-blue-600 transition-all"
+           [class.border-rose-500]="addressForm.get('receiverName')?.touched && addressForm.get('receiverName')?.invalid">
+    <div *ngIf="addressForm.get('receiverName')?.touched && addressForm.get('receiverName')?.invalid" class="text-rose-500 text-[10px] font-bold pl-1 mt-1 animate-fadeIn">
+      Vui lòng nhập họ tên người nhận (tối thiểu 2 ký tự).
+    </div>
   </div>
 
   <div class="space-y-2">
     <label class="text-xs font-black uppercase tracking-widest text-slate-400 px-1">Số điện thoại</label>
     <input formControlName="phoneNumber" type="text" placeholder="Nhập số điện thoại"
-           class="w-full bg-slate-50 border border-slate-100 rounded-2xl px-5 py-4 font-bold text-slate-800 outline-none focus:border-blue-600 transition-all">
+           class="w-full bg-slate-50 border border-slate-100 rounded-2xl px-5 py-4 font-bold text-slate-800 outline-none focus:border-blue-600 transition-all"
+           [class.border-rose-500]="addressForm.get('phoneNumber')?.touched && addressForm.get('phoneNumber')?.invalid">
+    <div *ngIf="addressForm.get('phoneNumber')?.touched && addressForm.get('phoneNumber')?.invalid" class="text-rose-500 text-[10px] font-bold pl-1 mt-1 animate-fadeIn">
+      <span *ngIf="addressForm.get('phoneNumber')?.errors?.['required']">Vui lòng nhập số điện thoại.</span>
+      <span *ngIf="addressForm.get('phoneNumber')?.errors?.['pattern']">Số điện thoại phải có 10 chữ số.</span>
+    </div>
   </div>
 
   <!-- Provincial Dropdown Section -->
@@ -65,7 +74,11 @@
   <div class="space-y-2">
     <label class="text-xs font-black uppercase tracking-widest text-slate-400 px-1">Số nhà / Tên đường</label>
     <input formControlName="street" type="text" placeholder="VD: 123 Lê Lợi..."
-           class="w-full bg-slate-50 border border-slate-100 rounded-2xl px-5 py-4 font-bold text-slate-800 outline-none focus:border-blue-600 transition-all">
+           class="w-full bg-slate-50 border border-slate-100 rounded-2xl px-5 py-4 font-bold text-slate-800 outline-none focus:border-blue-600 transition-all"
+           [class.border-rose-500]="addressForm.get('street')?.touched && addressForm.get('street')?.invalid">
+    <div *ngIf="addressForm.get('street')?.touched && addressForm.get('street')?.invalid" class="text-rose-500 text-[10px] font-bold pl-1 mt-1 animate-fadeIn">
+      Vui lòng nhập số nhà và tên đường.
+    </div>
   </div>
 
   <div class="flex items-center gap-3 px-1 pt-2">

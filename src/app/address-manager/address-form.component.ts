@@ -84,6 +84,7 @@ export class AddressFormComponent implements OnInit {
 
   onSubmit() {
     if (this.addressForm.invalid || !this.selectedProvince || !this.selectedWard) {
+      this.addressForm.markAllAsTouched();
       this.toastService.show('Vui lòng điền đầy đủ thông tin và chọn Tỉnh/Xã', 'warning');
       return;
     }

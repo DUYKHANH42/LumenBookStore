@@ -39,6 +39,10 @@
           [class]="'px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-widest border ' + (order.status | orderStatus:'class')">
           {{order.status | orderStatus}}
         </span>
+        <button *ngIf="isCancelled(order.status)" (click)="reOrder(order); $event.stopPropagation()"
+          class="px-4 py-2 bg-blue-50 text-blue-600 rounded-full text-[10px] font-black uppercase tracking-widest border border-blue-100 hover:bg-blue-600 hover:text-white transition-all">
+          Mua lại
+        </button>
         <span
           class="material-symbols-outlined text-slate-300 group-hover:text-blue-600 transition-colors">chevron_right</span>
       </div>
@@ -86,19 +90,19 @@
         <div class="absolute top-1/2 left-10 right-10 h-1 bg-slate-100 -translate-y-1/2 -z-10"></div>
         <div class="flex flex-col items-center gap-2">
           <div class="w-8 h-8 rounded-full flex items-center justify-center text-xs font-black z-10"
-            [ngClass]="selectedOrder.status !== 'Cancelled' ? 'bg-blue-600 text-white' : 'bg-slate-200 text-slate-400'">
+            [ngClass]="!isCancelled(selectedOrder.status) ? 'bg-blue-600 text-white' : 'bg-slate-200 text-slate-400'">
             1</div>
           <span class="text-[10px] font-black uppercase tracking-widest text-slate-400">Đã đặt</span>
         </div>
         <div class="flex flex-col items-center gap-2">
           <div class="w-8 h-8 rounded-full flex items-center justify-center text-xs font-black z-10"
-            [ngClass]="['Paid', 'Shipping', 'Completed'].includes(selectedOrder.status) ? 'bg-blue-600 text-white' : 'bg-slate-200 text-slate-400'">
+            [ngClass]="['paid', 'shipping', 'completed'].includes(selectedOrder.status.toLowerCase()) ? 'bg-blue-600 text-white' : 'bg-slate-200 text-slate-400'">
             2</div>
           <span class="text-[10px] font-black uppercase tracking-widest text-slate-400">Đã thanh toán</span>
         </div>
         <div class="flex flex-col items-center gap-2">
           <div class="w-8 h-8 rounded-full flex items-center justify-center text-xs font-black z-10"
-            [ngClass]="['Shipping', 'Completed'].includes(selectedOrder.status) ? 'bg-blue-600 text-white' : 'bg-slate-200 text-slate-400'">
+            [ngClass]="['shipping', 'completed'].includes(selectedOrder.status.toLowerCase()) ? 'bg-blue-600 text-white' : 'bg-slate-200 text-slate-400'">
             3</div>
           <span class="text-[10px] font-black uppercase tracking-widest text-slate-400">Giao hàng</span>
         </div>
@@ -159,9 +163,14 @@
       </div>
 
       <div class="flex gap-4">
-        <button *ngIf="selectedOrder.status === 'Pending'" (click)="cancelOrder(selectedOrder.id)"
+        <button *ngIf="selectedOrder.status.toLowerCase() === 'pending'" (click)="cancelOrder(selectedOrder.id)"
           class="px-8 py-4 bg-rose-50 text-rose-600 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-rose-100 transition-all border border-rose-100">
           Hủy đơn hàng
+        </button>
+
+        <button *ngIf="isCancelled(selectedOrder.status)" (click)="reOrder(selectedOrder)"
+          class="px-8 py-4 bg-blue-600 text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-blue-700 shadow-lg shadow-blue-600/20 transition-all">
+          Mua lại đơn hàng
         </button>
 
         <button (click)="closeDetail()"
