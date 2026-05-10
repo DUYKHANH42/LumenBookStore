@@ -31,7 +31,18 @@ export class AuthInterceptor implements HttpInterceptor {
       catchError(error => {
         const isLoginRequest = request.url.includes('/auth/login');
         const isRefreshRequest = request.url.includes('/auth/refresh-token');
-        if (error instanceof HttpErrorResponse && !isExternalApi && error.status === 401 && !isLoginRequest && !isRefreshRequest) {
+        const isLogoutRequest = request.url.includes('/auth/logout');
+
+        const shouldHandleRefresh = 
+          error instanceof HttpErrorResponse && 
+          !isExternalApi && 
+          error.status === 401 && 
+          !isLoginRequest && 
+          !isRefreshRequest && 
+          !isLogoutRequest &&
+          !!token; // Chỉ cố gắng refresh nếu chúng ta thực sự có một token trong bộ nhớ (nếu không token = null nghĩa là khách vãng lai thực thụ)
+
+        if (shouldHandleRefresh) {
           return this.handle401Error(request, next);
         }
         return throwError(() => error);

@@ -129,10 +129,11 @@ export class AuthService {
 
   // Đăng xuất
   logout() {
-    this.http.post(`${this.apiUrl}/logout`, {}, { withCredentials: true }).subscribe({
-      next: () => this.clearLocalSession(),
-      error: () => this.clearLocalSession()
-    });
+    // Xóa session tại Client ngay lập tức để chặn đứng việc đính kèm Token đã hết hạn vào các Request tiếp theo
+    this.clearLocalSession();
+    
+    // Sau đó thông báo lên server để hủy HTTP-Only Cookie (nếu có)
+    this.http.post(`${this.apiUrl}/logout`, {}, { withCredentials: true }).subscribe();
   }
 
   private clearLocalSession() {
