@@ -50,7 +50,7 @@
               <div *ngFor="let product of suggestions" (mousedown)="onSelectProduct(product.id)"
                 class="flex items-center gap-4 px-4 py-3 hover:bg-blue-50 cursor-pointer transition-all group">
                 <div class="w-12 h-16 rounded-lg overflow-hidden flex-shrink-0 shadow-sm">
-                  <img [src]="'https://bookstore-asp-nc.onrender.com/uploads/' + product.imageUrl"
+                  <img [src]="(product.imageUrl || '').startsWith('http') ? product.imageUrl : 'https://bookstore-asp-nc.onrender.com/uploads/' + product.imageUrl"
                     class="w-full h-full object-cover transition-transform group-hover:scale-110" />
                 </div>
                 <div class="flex-1 min-w-0">
@@ -148,7 +148,7 @@
     </div>
   </div>
 
-  <div class="bg-white border-t border-slate-50">
+  <div class="bg-white border-t border-slate-50 hidden lg:block">
     <div class="max-w-7xl mx-auto px-6 md:px-8">
       <div class="flex items-center space-x-8 lg:space-x-12 h-14">
         <div *ngFor="let cat of navCategories" class="relative group h-full flex items-center flex-shrink-0">
@@ -232,7 +232,7 @@
 </div>
 
 
-<main class="pt-32 md:pt-40 min-h-screen">
+<main class="pt-24 lg:pt-40 min-h-screen">
   <router-outlet></router-outlet>
 </main>
 

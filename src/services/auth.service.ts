@@ -15,19 +15,21 @@ export class AuthService {
   private currentUserSubject = new BehaviorSubject<AuthResponseDto | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
 
+  private inMemoryToken: string | null = null;
+
   constructor() {
-    const token = localStorage.getItem('token');
     const fullName = localStorage.getItem('fullName');
     const email = localStorage.getItem('email');
 
-    if (token) {
+    // Mặc định khởi tạo user với trạng thái có thể chưa đầy đủ (sẽ được cập nhật sau khi refresh token)
+    if (fullName || email) {
       const roles = localStorage.getItem('roles');
       this.currentUserSubject.next({
         isSuccess: true,
-        message: 'Loaded from storage',
-        token,
-        fullName: localStorage.getItem('fullName') || undefined,
-        email: localStorage.getItem('email') || undefined,
+        message: 'Loaded basic info from storage',
+        token: undefined,
+        fullName: fullName || undefined,
+        email: email || undefined,
         address: localStorage.getItem('address') || undefined,
         phoneNumber: localStorage.getItem('phoneNumber') || undefined,
         avtUrl: localStorage.getItem('avtUrl') || undefined,
@@ -42,8 +44,8 @@ export class AuthService {
     return this.http.post<AuthResponseDto>(`${this.apiUrl}/login`, data, { withCredentials: true }).pipe(
       map(res => {
         if (res.isSuccess && res.token) {
-          localStorage.setItem('token', res.token);
-          if (res.refreshToken) localStorage.setItem('refreshToken', res.refreshToken);
+          this.inMemoryToken = res.token;
+          
           if (res.fullName) localStorage.setItem('fullName', res.fullName);
           if (res.email) localStorage.setItem('email', res.email);
           if (res.address) localStorage.setItem('address', res.address);
@@ -127,8 +129,14 @@ export class AuthService {
 
   // Đăng xuất
   logout() {
-    localStorage.removeItem('token');
-    localStorage.removeItem('refreshToken');
+    this.http.post(`${this.apiUrl}/logout`, {}, { withCredentials: true }).subscribe({
+      next: () => this.clearLocalSession(),
+      error: () => this.clearLocalSession()
+    });
+  }
+
+  private clearLocalSession() {
+    this.inMemoryToken = null;
     localStorage.removeItem('fullName');
     localStorage.removeItem('email');
     localStorage.removeItem('address');
@@ -139,28 +147,26 @@ export class AuthService {
     this.currentUserSubject.next(null);
   }
 
-  // Lấy token hiện tại
+  // Lấy token hiện tại (từ memory)
   getToken(): string | null {
-    return localStorage.getItem('token');
-  }
-
-  getRefreshToken(): string | null {
-    return localStorage.getItem('refreshToken');
+    return this.inMemoryToken;
   }
 
   // Làm mới token
   refreshToken(): Observable<AuthResponseDto> {
-    const token = this.getToken();
-    const refreshToken = this.getRefreshToken();
-
+    // Không cần gửi RefreshToken vì đã nằm trong HttpOnly cookie
     return this.http.post<AuthResponseDto>(`${this.apiUrl}/refresh-token`, {
-      accessToken: token,
-      refreshToken: refreshToken
+      accessToken: this.inMemoryToken || ''
     }, { withCredentials: true }).pipe(
       map(res => {
         if (res.isSuccess && res.token) {
-          localStorage.setItem('token', res.token);
-          if (res.refreshToken) localStorage.setItem('refreshToken', res.refreshToken);
+          this.inMemoryToken = res.token;
+          
+          if (res.fullName) localStorage.setItem('fullName', res.fullName);
+          if (res.email) localStorage.setItem('email', res.email);
+          if (res.phoneNumber) localStorage.setItem('phoneNumber', res.phoneNumber);
+          if (res.roles) localStorage.setItem('roles', JSON.stringify(res.roles));
+          
           this.currentUserSubject.next({
             ...this.currentUserSubject.value,
             ...res
@@ -173,7 +179,7 @@ export class AuthService {
 
   // Kiểm tra trạng thái đăng nhập
   isLoggedIn(): boolean {
-    return !!this.getToken();
+    return !!this.inMemoryToken;
   }
 
   // Hàm helper để lấy đường dẫn ảnh đầy đủ
