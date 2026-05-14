@@ -22,7 +22,8 @@
             <!-- Upload Overlay -->
             <label for="avatarInput"
               class="absolute inset-0 bg-black/40 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
-              <span class="material-symbols-outlined text-white text-3xl mb-1">photo_camera</span>
+              <span class="material-symbols-outlined text-white text-3xl mb-1 notranslate"
+                translate="no">photo_camera</span>
               <span class="text-white text-[10px] font-black uppercase tracking-widest">Tải ảnh lên</span>
             </label>
             <input type="file" id="avatarInput" class="hidden" accept="image/*" (change)="onAvatarSelected($event)">
@@ -34,10 +35,10 @@
           <span
             class="bg-white/20 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-[0.2em] mb-4 inline-block backdrop-blur-md">Thành
             viên tích cực</span>
-          <h1 class="text-4xl md:text-6xl font-black tracking-tighter mb-2">{{userInfo?.fullName || 'Người dùng ẩn
-            danh'}}</h1>
+          <h1 class="text-4xl md:text-6xl font-black tracking-tighter mb-2">{{userInfo?.fullName || 'Người dùng'}}</h1>
           <p class="text-blue-100 font-medium flex items-center justify-center md:justify-start gap-2 text-lg">
-            <span class="material-symbols-outlined text-xl">mail</span> {{userInfo?.email || 'Chưa cập nhật email'}}
+            <span class="material-symbols-outlined text-xl notranslate" translate="no">mail</span> {{userInfo?.email ||
+            'Chưa cập nhật email'}}
           </p>
         </div>
       </div>
@@ -49,17 +50,18 @@
     </div>
 
     <!-- Content Layout -->
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12">
-      <!-- Sidebar Tabs -->
-      <div class="lg:col-span-4">
+    <div class="flex flex-col lg:flex-row gap-10 items-start w-full">
+
+      <!-- Sidebar -->
+      <div class="w-full lg:w-80 shrink-0">
         <div class="bg-white rounded-[3rem] p-6 shadow-sm border border-slate-100 sticky top-36">
           <div class="space-y-4">
             <button (click)="switchTab('overview')" [class.bg-blue-50]="activeTab === 'overview'"
               [class.text-blue-600]="activeTab === 'overview'" [class.font-black]="activeTab === 'overview'"
               [class.text-slate-500]="activeTab !== 'overview'" [class.hover:bg-slate-50]="activeTab !== 'overview'"
               class="w-full text-left px-6 py-4 rounded-[2rem] font-bold transition-premium flex items-center gap-4">
-              <span class="material-symbols-outlined"
-                [class.text-blue-600]="activeTab === 'overview'">account_circle</span>
+              <span class="material-symbols-outlined notranslate" [class.text-blue-600]="activeTab === 'overview'"
+                translate="no">account_circle</span>
               Tổng quan
             </button>
 
@@ -67,7 +69,8 @@
               [class.text-blue-600]="activeTab === 'orders'" [class.font-black]="activeTab === 'orders'"
               [class.text-slate-500]="activeTab !== 'orders'" [class.hover:bg-slate-50]="activeTab !== 'orders'"
               class="w-full text-left px-6 py-4 rounded-[2rem] font-bold transition-premium flex items-center gap-4">
-              <span class="material-symbols-outlined" [class.text-blue-600]="activeTab === 'orders'">local_mall</span>
+              <span class="material-symbols-outlined notranslate" [class.text-blue-600]="activeTab === 'orders'"
+                translate="no">local_mall</span>
               Đơn hàng của tôi
             </button>
 
@@ -75,17 +78,17 @@
               [class.text-rose-500]="activeTab === 'favorites'" [class.font-black]="activeTab === 'favorites'"
               [class.text-rose-400]="activeTab !== 'favorites'" [class.hover:bg-rose-50]="activeTab !== 'favorites'"
               class="w-full text-left px-6 py-4 rounded-[2rem] font-bold transition-premium flex items-center gap-4 group">
-              <span class="material-symbols-outlined group-hover:animate-pulse-hot"
-                [class.text-red-600]="activeTab === 'favorites'">favorite</span>
+              <span class="material-symbols-outlined group-hover:animate-pulse-hot notranslate"
+                [class.text-red-600]="activeTab === 'favorites'" translate="no">favorite</span>
               Sản phẩm yêu thích
-
             </button>
 
             <button (click)="switchTab('settings')" [class.bg-blue-50]="activeTab === 'settings'"
               [class.text-blue-600]="activeTab === 'settings'" [class.font-black]="activeTab === 'settings'"
               [class.text-slate-500]="activeTab !== 'settings'" [class.hover:bg-slate-50]="activeTab !== 'settings'"
               class="w-full text-left px-6 py-4 rounded-[2rem] font-bold transition-premium flex items-center gap-4">
-              <span class="material-symbols-outlined" [class.text-blue-600]="activeTab === 'settings'">settings</span>
+              <span class="material-symbols-outlined notranslate" [class.text-blue-600]="activeTab === 'settings'"
+                translate="no">settings</span>
               Cài đặt tài khoản
             </button>
           </div>
@@ -94,486 +97,317 @@
 
           <button (click)="logout()"
             class="w-full text-left px-6 py-4 rounded-[2rem] font-bold text-slate-400 hover:bg-slate-900 hover:text-white transition-premium flex items-center gap-4 group">
-            <span class="material-symbols-outlined group-hover:rotate-180 transition-transform">logout</span>
+            <span class="material-symbols-outlined group-hover:rotate-180 transition-transform notranslate"
+              translate="no">logout</span>
             Đăng xuất
           </button>
         </div>
       </div>
 
-      <!-- Main Panel -->
-      <div class="lg:col-span-8">
+      <!-- Main Panel Content -->
+      <div class="flex-1 min-w-0 w-full">
+
         <!-- Overview Tab -->
         <div *ngIf="activeTab === 'overview'" class="animate-fadeIn">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-            <!-- Metric Card 1 -->
             <div class="bg-white p-8 rounded-[3rem] shadow-sm border border-slate-100 flex items-center gap-6">
               <div class="w-16 h-16 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center font-black">
-                <span class="material-symbols-outlined text-3xl">menu_book</span>
+                {{orders.length}}
               </div>
               <div>
-                <p class="text-xs font-black uppercase text-slate-400 tracking-widest mb-1">Đơn hàng đã mua</p>
-                <p class="text-4xl font-black text-slate-800">{{ orders.length }}</p>
+                <p class="text-slate-400 font-bold uppercase tracking-widest text-[10px] mb-1">Đơn hàng đã đặt</p>
+                <h4 class="text-2xl font-black text-slate-800">Lịch sử mua sắm</h4>
               </div>
             </div>
 
-            <!-- Metric Card 2 -->
             <div class="bg-white p-8 rounded-[3rem] shadow-sm border border-slate-100 flex items-center gap-6">
-              <div class="w-16 h-16 bg-rose-50 text-rose-500 rounded-full flex items-center justify-center font-black">
-                <span class="material-symbols-outlined text-3xl">favorite</span>
+              <div class="w-16 h-16 bg-rose-50 text-rose-600 rounded-full flex items-center justify-center font-black">
+                {{favorites.length}}
               </div>
               <div>
-                <p class="text-xs font-black uppercase text-slate-400 tracking-widest mb-1">Đã thả tim</p>
-                <p class="text-4xl font-black text-slate-800">{{ favorites.length }}</p>
+                <p class="text-slate-400 font-bold uppercase tracking-widest text-[10px] mb-1">Sản phẩm yêu thích</p>
+                <h4 class="text-2xl font-black text-slate-800">Bộ sưu tập</h4>
               </div>
             </div>
           </div>
 
-          <div class="bg-white p-10 rounded-[3rem] shadow-sm border border-slate-100">
-            <h3 class="text-2xl font-black mb-8 text-slate-800">Thông tin cá nhân</h3>
-            <div class="space-y-6">
-              <div class="flex flex-col md:flex-row md:items-center justify-between py-4 border-b border-slate-50">
-                <span class="text-slate-400 font-bold mb-1 md:mb-0">Họ và Tên</span>
-                <span class="font-black text-slate-800 text-lg">{{userInfo?.fullName}}</span>
-              </div>
-              <div class="flex flex-col md:flex-row md:items-center justify-between py-4 border-b border-slate-50">
-                <span class="text-slate-400 font-bold mb-1 md:mb-0">Mật khẩu</span>
-                <span class="font-black text-slate-800 text-lg tracking-widest">••••••••</span>
-              </div>
-              <div class="flex flex-col md:flex-row md:items-center justify-between py-4 border-b border-slate-50">
-                <span class="text-slate-400 font-bold mb-1 md:mb-0">Vai trò</span>
-                <span class="bg-slate-100 text-slate-800 px-3 py-1 rounded-lg font-black text-sm uppercase">User</span>
-              </div>
+          <!-- Recent Orders Preview -->
+          <div class="bg-white p-8 md:p-10 rounded-[3rem] shadow-sm border border-slate-100">
+            <div class="flex items-center justify-between mb-8">
+              <h3 class="text-2xl font-black text-slate-800">Hoạt động gần đây</h3>
+              <button (click)="switchTab('orders')" class="text-blue-600 font-black text-sm hover:underline">Xem tất
+                cả</button>
             </div>
-            <div class="mt-10">
-              <button (click)="activeTab = 'settings'"
-                class="bg-slate-900 text-white px-8 py-4 rounded-2xl font-black hover:bg-blue-600 transition-premium shadow-xl text-sm">Chỉnh
-                sửa hồ sơ</button>
+
+            <div *ngIf="orders.length === 0" class="py-12 text-center">
+              <span class="material-symbols-outlined text-slate-200 text-6xl mb-4 notranslate"
+                translate="no">history</span>
+              <p class="text-slate-400 font-bold">Chưa có hoạt động mua hàng nào.</p>
+            </div>
+
+            <div *ngIf="orders.length > 0" class="space-y-4">
+              <div *ngFor="let order of orders.slice(0,3)"
+                class="flex items-center justify-between p-6 rounded-[2rem] bg-slate-50 border border-slate-100">
+                <div class="flex items-center gap-4">
+                  <div class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-sm">
+                    <span class="material-symbols-outlined text-slate-400 notranslate"
+                      translate="no">receipt_long</span>
+                  </div>
+                  <div>
+                    <p class="font-black text-slate-800">Đơn hàng #{{order.id}}</p>
+                    <p class="text-xs text-slate-400 font-bold">{{order.createdAt | date:'dd/MM/yyyy HH:mm'}}</p>
+                  </div>
+                </div>
+                <div class="text-right">
+                  <p class="font-black text-blue-600">{{order.totalPrice | currency:'VND'}}</p>
+                  <span
+                    [class]="'text-[10px] px-3 py-1 rounded-full font-black uppercase ' + getStatusClass(order.status)">
+                    {{order.status}}
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
         <!-- Orders Tab -->
         <div *ngIf="activeTab === 'orders'" class="animate-fadeIn">
-          <div *ngIf="orders.length === 0"
-            class="bg-white p-10 rounded-[3rem] shadow-sm border border-slate-100 text-center py-20">
-            <div class="w-32 h-32 bg-slate-50 rounded-full mx-auto flex items-center justify-center mb-8">
-              <span class="material-symbols-outlined text-6xl text-slate-300">receipt_long</span>
+          <div class="bg-white p-8 md:p-10 rounded-[3rem] shadow-sm border border-slate-100 min-h-[500px]">
+            <h3 class="text-2xl font-black mb-8 text-slate-800">Lịch sử đơn hàng</h3>
+
+            <div *ngIf="orders.length === 0" class="py-20 text-center">
+              <div class="w-24 h-24 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-6">
+                <span class="material-symbols-outlined text-slate-200 text-5xl notranslate"
+                  translate="no">shopping_basket</span>
+              </div>
+              <h4 class="text-xl font-black text-slate-800 mb-2">Chưa có đơn hàng nào</h4>
+              <p class="text-slate-400 font-bold mb-8">Hãy bắt đầu mua sắm để lấp đầy lịch sử của bạn!</p>
+              <a routerLink="/"
+                class="px-8 py-3 bg-blue-600 text-white rounded-2xl font-black text-sm transition-all hover:shadow-lg hover:shadow-blue-200">Mua
+                sắm ngay</a>
             </div>
-            <h3 class="text-2xl font-black mb-4 text-slate-800">Chưa có đơn hàng nào</h3>
-            <p class="text-slate-400 font-medium max-w-sm mx-auto mb-8">Bạn chưa thực hiện giao dịch nào. Hãy khám phá
-              những sản phẩm thú vị ngay hôm nay!</p>
-            <button routerLink="/"
-              class="bg-blue-600 text-white px-8 py-4 rounded-2xl font-black hover:scale-105 transition-premium shadow-xl text-sm">Đi
-              mua sắm</button>
-          </div>
 
-          <div *ngIf="orders.length > 0" class="space-y-4">
-            <div *ngFor="let order of orders" (click)="viewDetail(order.id)"
-              class="bg-white p-6 rounded-[2.5rem] shadow-sm border border-slate-100 hover:border-blue-200 transition-premium cursor-pointer group flex flex-col md:flex-row md:items-center justify-between gap-6">
-              <div class="flex items-center gap-6">
-                <div
-                  class="w-14 h-14 bg-slate-50 rounded-2xl flex items-center justify-center text-slate-400 group-hover:bg-blue-50 group-hover:text-blue-600 transition-colors">
-                  <span class="material-symbols-outlined">receipt_long</span>
-                </div>
-                <div>
-                  <h3 class="font-black text-slate-800 uppercase tracking-tight">Đơn hàng #{{order.orderNumber}}</h3>
-                  <p class="text-xs text-slate-400 font-bold">{{order.createdAt | date:'dd/MM/yyyy HH:mm'}}</p>
-                </div>
-              </div>
-
-              <div class="flex items-center justify-between md:justify-end gap-8">
-                <div class="text-right">
-                  <p class="text-[10px] font-black uppercase text-slate-400 mb-1">Tổng cộng</p>
-                  <p class="font-black text-slate-900">{{order.totalPrice | currency:'VND':'symbol':'1.0-0'}}</p>
-                </div>
-                <span
-                  [class]="'px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-widest border ' + getStatusClass(order.status)">
-                  {{order.status}}
-                </span>
-                <span
-                  class="material-symbols-outlined text-slate-300 group-hover:text-blue-600 transition-colors">chevron_right</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Integrated Order Detail Modal -->
-        <div *ngIf="showOrderDetail && selectedOrder"
-          class="fixed inset-0 z-[1000] flex items-center justify-center p-4 md:p-6 bg-slate-900/60 backdrop-blur-md animate-fadeIn">
-          <div class="bg-white w-full max-w-4xl rounded-[3rem] shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
-            <header class="p-8 border-b border-slate-50 flex justify-between items-center bg-slate-50/50">
-              <div>
-                <h2 class="text-2xl font-black text-slate-900">Chi tiết đơn hàng</h2>
-                <p class="text-xs text-slate-500 font-black uppercase tracking-widest">Mã đơn:
-                  #{{selectedOrder.orderNumber}}</p>
-              </div>
-              <button (click)="closeOrderDetail()"
-                class="w-10 h-10 bg-white shadow-sm border border-slate-100 rounded-full flex items-center justify-center text-slate-400 hover:text-slate-600 active:scale-95 transition-all">
-                <span class="material-symbols-outlined">close</span>
-              </button>
-            </header>
-
-            <div class="flex-1 overflow-y-auto p-8 space-y-10 custom-scrollbar">
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-                <div class="space-y-6">
-                  <div>
-                    <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3">Người nhận</h4>
-                    <p class="font-black text-slate-800">{{selectedOrder.shippingName}}</p>
-                    <p class="text-sm text-slate-500 font-bold">{{selectedOrder.shippingPhone}}</p>
-                  </div>
-                  <div>
-                    <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3">Địa chỉ giao hàng
-                    </h4>
-                    <p class="text-sm text-slate-600 leading-relaxed font-bold">{{selectedOrder.shippingAddress}}</p>
-                  </div>
-                </div>
-                <div class="space-y-6">
-                  <div>
-                    <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3">Trạng thái</h4>
-                    <span
-                      [class]="'px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-widest border ' + getStatusClass(selectedOrder.status)">
-                      {{selectedOrder.status}}
-                    </span>
-                  </div>
-                  <div>
-                    <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3">Thời gian đặt</h4>
-                    <p class="text-sm text-slate-600 font-black">{{selectedOrder.createdAt | date:'dd/MM/yyyy HH:mm'}}
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div>
-                <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-6">Sản phẩm đã mua</h4>
-                <div class="space-y-4">
-                  <div *ngFor="let item of selectedOrder.items"
-                    class="flex items-center gap-6 p-4 rounded-3xl bg-slate-50/50 border border-slate-50">
-                    <div class="w-16 h-20 rounded-2xl overflow-hidden flex-shrink-0 shadow-sm">
-                      <img
-                        [src]="item.imageUrl.startsWith('http') ? item.imageUrl : 'https://bookstore-asp-nc.onrender.com/uploads/' + item.imageUrl"
-                        class="w-full h-full object-cover">
+            <div *ngIf="orders.length > 0" class="space-y-6">
+              <div *ngFor="let order of orders"
+                class="group bg-slate-50 p-6 md:p-8 rounded-[2.5rem] border border-slate-100 hover:border-blue-200 transition-all hover:bg-white hover:shadow-xl relative overflow-hidden">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
+                  <div class="flex items-center gap-6">
+                    <div
+                      class="w-16 h-16 bg-white rounded-3xl flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
+                      <span class="material-symbols-outlined text-3xl text-slate-300 notranslate"
+                        translate="no">package_2</span>
                     </div>
-                    <div class="flex-1 min-w-0">
-                      <h5 class="font-black text-slate-800 line-clamp-1 truncate">{{item.productName}}</h5>
-                      <p class="text-xs text-slate-400 font-bold">Số lượng: {{item.quantity}}</p>
+                    <div>
+                      <div class="flex items-center gap-3 mb-1">
+                        <h4 class="text-lg font-black text-slate-800">Đơn hàng #{{order.id}}</h4>
+                        <span
+                          [class]="'text-[10px] px-3 py-1 rounded-full font-black uppercase border ' + getStatusClass(order.status)">
+                          {{order.status}}
+                        </span>
+                      </div>
+                      <p class="text-slate-400 font-bold text-sm">{{order.createdAt | date:'dd/MM/yyyy HH:mm'}}</p>
                     </div>
-                    <div class="text-right">
-                      <p class="text-sm font-black text-slate-900">{{item.subTotal | currency:'VND':'symbol':'1.0-0'}}
-                      </p>
-                      <p class="text-[10px] text-slate-400 font-bold">{{item.price | currency:'VND':'symbol':'1.0-0'}} /
-                        sản phẩm</p>
+                  </div>
+
+                  <div class="flex items-center justify-between md:text-right gap-10">
+                    <div>
+                      <p class="text-slate-400 font-bold text-[10px] uppercase tracking-widest mb-1">Tổng thanh toán</p>
+                      <p class="text-xl font-black text-blue-600">{{order.totalPrice | currency:'VND'}}</p>
                     </div>
+                    <button (click)="viewDetail(order.id)"
+                      class="px-6 py-3 bg-white text-slate-800 rounded-2xl font-black text-xs uppercase tracking-widest shadow-sm hover:bg-slate-900 hover:text-white transition-all border border-slate-100">
+                      Chi tiết
+                    </button>
                   </div>
                 </div>
               </div>
             </div>
-
-            <footer class="p-8 border-t border-slate-50 bg-slate-50/30">
-              <div class="flex justify-between items-center">
-                <span class="text-lg font-black text-slate-800">Tổng thanh toán</span>
-                <span class="text-3xl font-black text-blue-600 tracking-tighter">{{selectedOrder.totalPrice |
-                  currency:'VND':'symbol':'1.0-0'}}</span>
-              </div>
-            </footer>
           </div>
         </div>
 
         <!-- Settings Tab -->
-        <div *ngIf="activeTab === 'settings'"
-          class="bg-white p-8 md:p-10 rounded-[3rem] shadow-sm border border-slate-100 animate-fadeIn">
-          <h3 class="text-2xl font-black mb-8 text-slate-800 flex items-center gap-3">
-            Cài đặt tài khoản <span class="material-symbols-outlined text-blue-600">manage_accounts</span>
-          </h3>
+        <div *ngIf="activeTab === 'settings'" class="animate-fadeIn">
+          <div class="grid grid-cols-1 gap-8">
+            <!-- Profile Info -->
+            <div *ngIf="userInfo" class="bg-white p-8 md:p-10 rounded-[3rem] shadow-sm border border-slate-100">
+              <h3 class="text-2xl font-black mb-8 text-slate-800">Thông tin cá nhân</h3>
 
-          <div class="space-y-6" *ngIf="userInfo as u">
-            <!-- Thông tin cơ bản -->
-            <h4 class="text-lg font-black text-slate-800 flex items-center gap-2 mb-2">
-              <span class="material-symbols-outlined text-blue-600">person</span> Thông tin cá nhân
-            </h4>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <!-- Full Name -->
-              <div class="flex flex-col gap-2">
-                <label class="text-[10px] font-black uppercase tracking-widest text-slate-400">Họ và Tên</label>
-                <div class="relative">
-                  <span
-                    class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">person</span>
-                  <input type="text" #fullNameInput [(ngModel)]="u.fullName"
-                    class="w-full bg-slate-50 border border-slate-200 text-slate-800 font-bold rounded-2xl py-4 pl-12 pr-4 outline-none focus:border-blue-600 focus:bg-white transition-all shadow-inner"
-                    [class.!border-rose-500]="errors['fullName']" [class.!focus:border-rose-500]="errors['fullName']"
-                    placeholder="Nhập họ và tên" />
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="space-y-2">
+                  <label class="text-xs font-black text-slate-400 uppercase tracking-widest pl-1">Họ và tên</label>
+                  <input type="text" [(ngModel)]="userInfo!.fullName" #fullNameInput
+                    class="w-full px-6 py-4 bg-slate-50 border-none rounded-2xl font-bold text-slate-700 focus:ring-2 focus:ring-blue-500 transition-all"
+                    placeholder="Nhập họ tên...">
                 </div>
-                <div *ngIf="errors['fullName']" class="text-rose-500 text-[10px] font-bold pl-1 mt-1 animate-fadeIn">
-                  Họ và tên không được để trống.
+                <div class="space-y-2">
+                  <label class="text-xs font-black text-slate-400 uppercase tracking-widest pl-1">Số điện thoại</label>
+                  <input type="text" [(ngModel)]="userInfo!.phoneNumber" #phoneInput
+                    class="w-full px-6 py-4 bg-slate-50 border-none rounded-2xl font-bold text-slate-700 focus:ring-2 focus:ring-blue-500 transition-all"
+                    placeholder="Nhập số điện thoại...">
                 </div>
               </div>
 
-              <!-- Phone -->
-              <div class="flex flex-col gap-2">
-                <label class="text-[10px] font-black uppercase tracking-widest text-slate-400">Số điện thoại</label>
-                <div class="relative">
-                  <span
-                    class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">call</span>
-                  <input type="tel" #phoneInput [(ngModel)]="u.phoneNumber"
-                    class="w-full bg-slate-50 border border-slate-200 text-slate-800 font-bold rounded-2xl py-4 pl-12 pr-4 outline-none focus:border-blue-600 focus:bg-white transition-all shadow-inner"
-                    [class.!border-rose-500]="errors['phoneNumber']"
-                    [class.!focus:border-rose-500]="errors['phoneNumber']" placeholder="Nhập số điện thoại" />
-                </div>
-                <div *ngIf="errors['phoneNumber']" class="text-rose-500 text-[10px] font-bold pl-1 mt-1 animate-fadeIn">
-                  Số điện thoại không đúng định dạng.
-                </div>
+              <div class="mt-10 pt-10 border-t border-slate-50 flex justify-end">
+                <button (click)="saveProfile()"
+                  class="px-10 py-4 bg-blue-600 text-white rounded-2xl font-black text-xs uppercase tracking-widest shadow-xl hover:bg-blue-700 active:scale-95 transition-all">
+                  Lưu thay đổi
+                </button>
+              </div>
+            </div>
+
+            <!-- Address Management -->
+            <div class="bg-white p-8 md:p-10 rounded-[3rem] shadow-sm border border-slate-100">
+              <div class="flex items-center justify-between mb-8">
+                <h3 class="text-2xl font-black text-slate-800">Địa chỉ nhận hàng</h3>
+                <button (click)="openAddressForm()"
+                  class="flex items-center gap-2 text-blue-600 font-black text-sm hover:bg-blue-50 px-4 py-2 rounded-xl transition-all">
+                  <span class="material-symbols-outlined text-lg notranslate" translate="no">add_location</span> Thêm
+                  mới
+                </button>
               </div>
 
-              <!-- Email -->
-              <div class="flex flex-col gap-2">
-                <label class="text-[10px] font-black uppercase tracking-widest text-slate-400">Email cá nhân</label>
-                <div class="relative">
-                  <span
-                    class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">mail</span>
-                  <input type="email" [value]="u.email || ''" disabled
-                    class="w-full bg-slate-100 border border-slate-200 text-slate-500 font-bold rounded-2xl py-4 pl-12 pr-4 outline-none cursor-not-allowed opacity-70" />
-                </div>
-                <p class="text-[9px] text-slate-400 font-bold ml-2 mt-1">* Email không thể thay đổi vì là định danh đăng
-                  nhập.</p>
+              <div *ngIf="isLoadingAddresses" class="space-y-4">
+                <div *ngFor="let i of [1,2]" class="h-24 bg-slate-50 animate-pulse rounded-2xl"></div>
               </div>
 
-              <!-- Trạng thái tài khoản (Read-only) -->
-              <div class="flex flex-col gap-2">
-                <label class="text-[10px] font-black uppercase tracking-widest text-slate-400">Trạng thái tài
-                  khoản</label>
-                <div
-                  class="bg-slate-50 border border-slate-200 rounded-2xl py-3.5 px-6 shadow-inner flex items-center justify-between h-[60px]"
-                  [ngClass]="u.isActive ? 'border-l-4 border-l-emerald-500 bg-emerald-50/30' : 'border-l-4 border-l-slate-300 bg-slate-100/50'">
-                  <div class="flex items-center gap-3">
-                    <span class="material-symbols-outlined transition-colors"
-                      [ngClass]="u.isActive ? 'text-emerald-500' : 'text-slate-400'">
-                      {{u.isActive ? 'verified_user' : 'gpp_bad'}}
-                    </span>
-                    <div class="flex flex-col">
-                      <span class="font-bold text-slate-800 leading-tight text-sm">
-                        {{ u.isActive ? 'Đang hoạt động' : 'Tạm khóa' }}
-                      </span>
+              <div *ngIf="!isLoadingAddresses && addresses.length === 0"
+                class="py-10 text-center bg-slate-50 rounded-[2rem] border border-dashed border-slate-200">
+                <p class="text-slate-400 font-bold">Chưa có địa chỉ nào được lưu.</p>
+              </div>
+
+              <div *ngIf="!isLoadingAddresses && addresses.length > 0" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div *ngFor="let addr of addresses"
+                  class="p-6 rounded-[2rem] border border-slate-100 bg-slate-50 relative group hover:border-blue-200 hover:bg-white hover:shadow-lg transition-all">
+                  <div class="flex items-start justify-between">
+                    <div>
+                      <p class="font-black text-slate-800 mb-1 flex items-center gap-2">
+                        {{addr.receiverName}}
+                        <span *ngIf="addr.isDefault"
+                          class="text-[8px] bg-blue-600 text-white px-2 py-0.5 rounded-md uppercase">Mặc định</span>
+                      </p>
+                      <p class="text-xs text-slate-500 font-bold mb-3">{{addr.phoneNumber}}</p>
+                      <p class="text-xs text-slate-400 leading-relaxed">{{addr.addressLine}}</p>
                     </div>
                   </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="h-px bg-slate-100 my-8"></div>
-
-            <!-- Địa chỉ nhận hàng (New CRUD Section) -->
-            <div class="flex justify-between items-center mb-6">
-              <h4 class="text-xl font-black text-slate-800 flex items-center gap-3">
-                <span class="material-symbols-outlined text-blue-600">location_on</span>
-                Sổ địa chỉ nhận hàng
-              </h4>
-              <button (click)="openAddressForm()"
-                class="text-blue-600 font-bold text-sm hover:underline flex items-center gap-1">
-                <span class="material-symbols-outlined text-lg">add</span>
-                Thêm địa chỉ mới
-              </button>
-            </div>
-
-            <div *ngIf="isLoadingAddresses" class="flex justify-center py-10">
-              <div class="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
-            </div>
-
-            <div *ngIf="!isLoadingAddresses && addresses.length === 0"
-              class="bg-slate-50 rounded-3xl p-10 text-center border border-dashed border-slate-200">
-              <span class="material-symbols-outlined text-4xl text-slate-300 mb-3">location_off</span>
-              <p class="text-slate-500 font-medium">Bạn chưa lưu địa chỉ giao hàng nào.</p>
-            </div>
-
-            <div class="space-y-4">
-              <div *ngFor="let addr of addresses"
-                class="p-6 rounded-[2rem] border border-slate-100 bg-slate-50/50 hover:bg-white hover:border-blue-200 transition-all group">
-                <div class="flex justify-between items-start">
-                  <div class="space-y-2">
-                    <div class="flex items-center gap-3">
-                      <span class="text-base font-black text-slate-800">{{addr.receiverName}}</span>
-                      <div class="w-[1px] h-3 bg-slate-300"></div>
-                      <span class="text-slate-500 font-bold text-sm">{{addr.phoneNumber}}</span>
-                      <span *ngIf="addr.isDefault"
-                        class="text-[9px] bg-blue-600 text-white px-2 py-0.5 rounded-full font-black uppercase tracking-widest">Mặc
-                        định</span>
-                    </div>
-                    <p class="text-sm text-slate-500 font-medium pr-10 line-clamp-2">{{addr.addressLine}}</p>
-                  </div>
-                  <div class="flex items-center gap-3">
+                  <div class="flex gap-2 mt-4 opacity-0 group-hover:opacity-100 transition-opacity">
                     <button (click)="openAddressForm(addr)"
-                      class="w-8 h-8 rounded-full flex items-center justify-center text-slate-400 hover:bg-blue-50 hover:text-blue-600 transition-all">
-                      <span class="material-symbols-outlined text-lg">edit</span>
-                    </button>
-                    <button *ngIf="!addr.isDefault" (click)="deleteAddress(addr.id)"
-                      class="w-8 h-8 rounded-full flex items-center justify-center text-slate-400 hover:bg-red-50 hover:text-red-500 transition-all">
-                      <span class="material-symbols-outlined text-lg">delete</span>
-                    </button>
+                      class="text-[10px] font-black text-blue-600 uppercase">Sửa</button>
+                    <button (click)="deleteAddress(addr.id)"
+                      class="text-[10px] font-black text-rose-500 uppercase">Xóa</button>
                   </div>
                 </div>
               </div>
             </div>
 
-            <!-- Nút Lưu Thông Tin Cá Nhân -->
-            <div class="pt-10 border-t border-slate-100 flex items-center justify-end">
-              <button (click)="saveProfile()"
-                class="bg-blue-600 text-white px-8 py-4 rounded-2xl font-black hover:scale-105 transition-premium shadow-xl text-sm flex items-center gap-2">
-                Cập nhật thông tin <span class="material-symbols-outlined text-base">save</span>
-              </button>
-            </div>
-          </div>
+            <!-- Password Security -->
+            <div class="bg-white p-8 md:p-10 rounded-[3rem] shadow-sm border border-slate-100">
+              <h3 class="text-2xl font-black mb-8 text-slate-800">Bảo mật</h3>
 
-
-          <!-- Section Đổi mật khẩu (Tách biệt hoàn toàn) -->
-          <div class="space-y-6 mt-12 pt-10 border-t-2 border-slate-100 border-dashed">
-            <h4 class="text-xl font-black text-rose-600 flex items-center gap-2 mb-2">
-              <span class="material-symbols-outlined">lock_reset</span> Đổi mật khẩu bảo mật
-            </h4>
-
-            <div class="grid grid-cols-1 gap-6">
-              <!-- Current Password -->
-              <div class="flex flex-col gap-2">
-                <label class="text-xs font-black uppercase tracking-widest text-slate-400">Mật khẩu hiện tại</label>
-                <div class="relative">
-                  <span
-                    class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">lock</span>
-                  <input type="password" #currentPasswordInput [(ngModel)]="currentPassword"
-                    class="w-full bg-slate-50 border border-slate-200 text-slate-800 font-bold rounded-2xl py-4 pl-12 pr-4 outline-none focus:border-rose-500 focus:bg-white transition-all shadow-inner"
-                    [class.!border-rose-500]="errors['currentPassword']"
-                    [class.!focus:border-rose-500]="errors['currentPassword']" placeholder="Nhập mật khẩu hiện tại" />
+              <div class="space-y-6">
+                <div class="space-y-2">
+                  <label class="text-xs font-black text-slate-400 uppercase tracking-widest pl-1">Mật khẩu hiện
+                    tại</label>
+                  <input type="password" [(ngModel)]="currentPassword" #currentPasswordInput
+                    class="w-full px-6 py-4 bg-slate-50 border-none rounded-2xl font-bold focus:ring-2 focus:ring-rose-500 transition-all">
                 </div>
-                <div *ngIf="errors['currentPassword']"
-                  class="text-rose-500 text-[10px] font-bold pl-1 mt-1 animate-fadeIn">
-                  Vui lòng nhập mật khẩu hiện tại.
-                </div>
-              </div>
-
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- New Password -->
-                <div class="flex flex-col gap-2">
-                  <label class="text-xs font-black uppercase tracking-widest text-slate-400">Mật khẩu mới</label>
-                  <div class="relative">
-                    <span
-                      class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">key</span>
-                    <input type="password" #newPasswordInput [(ngModel)]="newPassword"
-                      class="w-full bg-slate-50 border border-slate-200 text-slate-800 font-bold rounded-2xl py-4 pl-12 pr-4 outline-none focus:border-rose-500 focus:bg-white transition-all shadow-inner"
-                      [class.!border-rose-500]="errors['newPassword']"
-                      [class.!focus:border-rose-500]="errors['newPassword']" placeholder="Nhập mật khẩu mới" />
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div class="space-y-2">
+                    <label class="text-xs font-black text-slate-400 uppercase tracking-widest pl-1">Mật khẩu mới</label>
+                    <input type="password" [(ngModel)]="newPassword" #newPasswordInput
+                      class="w-full px-6 py-4 bg-slate-50 border-none rounded-2xl font-bold focus:ring-2 focus:ring-rose-500 transition-all">
                   </div>
-                  <div *ngIf="errors['newPassword']"
-                    class="text-rose-500 text-[10px] font-bold pl-1 mt-1 animate-fadeIn">
-                    Vui lòng nhập mật khẩu mới.
-                  </div>
-                </div>
-
-                <!-- Confirm New Password -->
-                <div class="flex flex-col gap-2">
-                  <label class="text-xs font-black uppercase tracking-widest text-slate-400">Xác nhận mật khẩu
-                    mới</label>
-                  <div class="relative">
-                    <span
-                      class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">password</span>
-                    <input type="password" #confirmPasswordInput [(ngModel)]="confirmPassword"
-                      class="w-full bg-slate-50 border border-slate-200 text-slate-800 font-bold rounded-2xl py-4 pl-12 pr-4 outline-none focus:border-rose-500 focus:bg-white transition-all shadow-inner"
-                      [class.!border-rose-500]="errors['confirmPassword']"
-                      [class.!focus:border-rose-500]="errors['confirmPassword']" placeholder="Nhập lại mật khẩu mới" />
-                  </div>
-                  <div *ngIf="errors['confirmPassword']"
-                    class="text-rose-500 text-[10px] font-bold pl-1 mt-1 animate-fadeIn">
-                    Mật khẩu xác nhận không khớp.
+                  <div class="space-y-2">
+                    <label class="text-xs font-black text-slate-400 uppercase tracking-widest pl-1">Xác nhận mật
+                      khẩu</label>
+                    <input type="password" [(ngModel)]="confirmPassword" #confirmPasswordInput
+                      class="w-full px-6 py-4 bg-slate-50 border-none rounded-2xl font-bold focus:ring-2 focus:ring-rose-500 transition-all">
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
 
-          <!-- Nút Lưu Mật Khẩu -->
-          <div class="pt-6 border-slate-100 flex items-center justify-end">
-            <button (click)="changePassword()" [disabled]="isLoading"
-              class="px-10 py-4 bg-slate-900 text-white rounded-2xl font-black text-xs uppercase tracking-widest shadow-xl hover:bg-rose-600 active:scale-95 transition-all flex items-center gap-2 disabled:opacity-50 disabled:pointer-events-none">
-              <span *ngIf="isLoading"
-                class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
-              {{ isLoading ? 'Đang cập nhật...' : 'Đổi mật khẩu' }}
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Favorites Tab -->
-      <div *ngIf="activeTab === 'favorites'" class="animate-fadeIn">
-        <div class="bg-white p-8 md:p-10 rounded-[3rem] shadow-sm border border-slate-100 min-h-[500px]">
-          <h3 class="text-2xl font-black mb-8 text-slate-800 flex items-center gap-3">
-            Bộ sưu tập của bạn <span class="material-symbols-outlined text-rose-500">favorite</span>
-          </h3>
-
-          <!-- Loading State -->
-          <div *ngIf="isLoadingFavorites" class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            <div *ngFor="let i of [1,2]"
-              class="bg-slate-50 p-4 rounded-[2.5rem] border border-slate-100 animate-pulse flex gap-4">
-              <div class="w-24 h-32 rounded-[1.5rem] bg-slate-200 flex-shrink-0"></div>
-              <div class="flex-1 py-2">
-                <div class="h-4 bg-slate-200 rounded-full w-full mb-3"></div>
-                <div class="h-3 bg-slate-200 rounded-full w-2/3 mb-6"></div>
-                <div class="w-10 h-10 bg-slate-200 rounded-full ml-auto"></div>
+              <div class="mt-10 pt-10 border-t border-slate-50 flex justify-end">
+                <button (click)="changePassword()" [disabled]="isLoading"
+                  class="px-10 py-4 bg-slate-900 text-white rounded-2xl font-black text-xs uppercase tracking-widest shadow-xl hover:bg-rose-600 transition-all disabled:opacity-50">
+                  {{ isLoading ? 'Đang cập nhật...' : 'Đổi mật khẩu' }}
+                </button>
               </div>
-            </div>
-          </div>
-
-          <!-- Empty State -->
-          <div *ngIf="!isLoadingFavorites && favorites.length === 0"
-            class="flex flex-col items-center justify-center py-16 text-center">
-            <div class="w-20 h-20 rounded-full bg-rose-50 flex items-center justify-center mb-6">
-              <span class="material-symbols-outlined text-4xl text-rose-300">heart_broken</span>
-            </div>
-            <h3 class="text-xl font-black text-slate-800 mb-2">Danh sách trống</h3>
-            <p class="text-slate-400 mb-8 max-w-xs text-sm">Bạn chưa thả tim sản phẩm nào. Thêm ngay vào bộ sưu tập!
-            </p>
-            <a routerLink="/"
-              class="px-8 py-3.5 bg-slate-900 text-white rounded-2xl font-black text-xs uppercase tracking-widest shadow-xl hover:bg-blue-600 transition-all">Khám
-              phá</a>
-          </div>
-
-          <!-- List -->
-          <div *ngIf="!isLoadingFavorites && favorites.length > 0" class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            <div *ngFor="let item of favorites"
-              class="group bg-white p-3 rounded-[2rem] shadow-sm hover:shadow-xl transition-premium border border-slate-100 flex gap-4 items-center relative pr-4">
-
-              <div [routerLink]="['/product', item.productId]"
-                class="w-20 h-[100px] flex-shrink-0 rounded-[1.5rem] overflow-hidden bg-slate-50 cursor-pointer shadow-inner">
-                <img [src]="item.imageUrl.startsWith('http') ? item.imageUrl : 'https://bookstore-asp-nc.onrender.com/uploads/' + item.imageUrl"
-                  class="w-full h-full object-cover transition-premium group-hover:scale-110" />
-              </div>
-
-              <div class="flex-1 min-w-0">
-                <h3 [routerLink]="['/product', item.productId]"
-                  class="font-black text-sm mb-1 leading-tight tracking-tight line-clamp-2 hover:text-blue-600 transition-colors cursor-pointer text-slate-800">
-                  {{item.productName}}</h3>
-                <span class="text-sm font-black text-rose-600 block mt-2">{{item.price |
-                  currency:'VND':'symbol':'1.0-0'}}</span>
-              </div>
-
-              <!-- Remove Button -->
-              <button (click)="removeFavorite(item.productId)"
-                class="absolute right-4 w-10 h-10 rounded-full bg-red-50 flex items-center justify-center text-red-600 hover:bg-red-600 hover:text-white transition-all active:scale-90">
-                <span class="material-symbols-outlined text-lg"
-                  style="font-variation-settings: 'FILL' 1;">favorite</span>
-              </button>
             </div>
           </div>
         </div>
-      </div>
 
-    </div>
-  </div>
-</div>
+        <!-- Favorites Tab -->
+        <div *ngIf="activeTab === 'favorites'" class="animate-fadeIn w-full">
+          <div class="bg-white p-8 md:p-10 rounded-[3rem] shadow-sm border border-slate-100 min-h-[500px] w-full">
+            <h3 class="text-2xl font-black mb-8 text-slate-800 flex items-center gap-3">
+              Bộ sưu tập của bạn <span class="material-symbols-outlined notranslate text-rose-500"
+                translate="no">favorite</span>
+            </h3>
 
-<!-- Modals (Address Form) - Truly Fixed at Root Level -->
+            <!-- Loading State -->
+            <div *ngIf="isLoadingFavorites" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div *ngFor="let i of [1,2]"
+                class="bg-slate-50 p-4 rounded-[2.5rem] border border-slate-100 animate-pulse flex gap-4 h-32"></div>
+            </div>
+
+            <!-- Empty State -->
+            <div *ngIf="!isLoadingFavorites && favorites.length === 0" class="py-20 text-center">
+              <div class="w-24 h-24 bg-rose-50 rounded-full flex items-center justify-center mx-auto mb-6">
+                <span class="material-symbols-outlined text-rose-200 text-5xl notranslate"
+                  style="font-variation-settings: 'FILL' 1;" translate="no">heart_broken</span>
+              </div>
+              <h4 class="text-xl font-black text-slate-800 mb-2">Chưa có sản phẩm yêu thích</h4>
+              <p class="text-slate-400 font-bold mb-8">Hãy thả tim cho những cuốn sách bạn yêu để xem chúng tại đây!</p>
+              <a routerLink="/"
+                class="px-8 py-3.5 bg-slate-900 text-white rounded-2xl font-black text-xs uppercase tracking-widest shadow-xl hover:bg-blue-600 transition-all">Khám
+                phá</a>
+            </div>
+
+            <!-- Favorites List -->
+            <div *ngIf="!isLoadingFavorites && favorites.length > 0"
+              class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+              <div *ngFor="let item of favorites"
+                class="group bg-white p-4 rounded-[2.5rem] shadow-sm hover:shadow-xl transition-all border border-slate-100 flex gap-5 items-center relative pr-4">
+
+                <div [routerLink]="['/product', item.productId]"
+                  class="w-24 h-24 flex-shrink-0 rounded-[1.5rem] overflow-hidden bg-slate-50 cursor-pointer shadow-inner">
+                  <img
+                    [src]="item.imageUrl.startsWith('http') ? item.imageUrl : 'https://bookstore-asp-nc.onrender.com/uploads/' + item.imageUrl"
+                    class="w-full h-full object-cover transition-premium group-hover:scale-110" />
+                </div>
+
+                <div class="flex-1 min-w-0">
+                  <h3 [routerLink]="['/product', item.productId]"
+                    class="font-black text-sm mb-1 leading-tight line-clamp-2 hover:text-blue-600 transition-colors cursor-pointer text-slate-800">
+                    {{item.productName}}
+                  </h3>
+                  <span class="text-sm font-black text-rose-600 block mt-2">{{item.price |
+                    currency:'VND':'symbol':'1.0-0'}}</span>
+                </div>
+
+                <button (click)="removeFavorite(item.productId)"
+                  class="absolute right-4 w-10 h-10 rounded-full bg-red-50 flex items-center justify-center text-red-600 hover:bg-red-600 hover:text-white transition-all active:scale-90">
+                  <span class="material-symbols-outlined text-lg notranslate" style="font-variation-settings: 'FILL' 1;"
+                    translate="no">favorite</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div> <!-- End Main Panel Content -->
+    </div> <!-- End Content Layout -->
+
+  </div> <!-- End max-w-7xl -->
+</div> <!-- End min-h-screen -->
+
+<!-- Modals (Address Form) -->
 <div *ngIf="showAddressForm"
   class="fixed inset-0 z-[999] flex items-center justify-center p-4 md:p-6 bg-slate-900/40 backdrop-blur-md animate-fadeIn">
   <div
-    class="bg-white w-full max-w-xl rounded-[3rem] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] p-10 relative max-h-[92vh] overflow-y-auto custom-scrollbar overflow-x-hidden">
+    class="bg-white w-full max-w-xl rounded-[3rem] shadow-2xl p-10 relative max-h-[92vh] overflow-y-auto custom-scrollbar">
     <button (click)="showAddressForm = false"
       class="absolute top-8 right-8 w-10 h-10 rounded-full flex items-center justify-center bg-slate-50 text-slate-400 hover:bg-slate-900 hover:text-white transition-all z-10">
-      <span class="material-symbols-outlined">close</span>
+      <span class="material-symbols-outlined notranslate" translate="no">close</span>
     </button>
 
     <app-address-form [address]="selectedAddress" [defaultName]="userInfo?.fullName || ''"
@@ -587,7 +421,7 @@
   @keyframes fadeIn {
     from {
       opacity: 0;
-      transform: translateY(20px);
+      transform: translateY(15px);
     }
 
     to {

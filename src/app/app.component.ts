@@ -85,11 +85,8 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    // Thử khôi phục session đăng nhập từ HttpOnly cookie
-    this.authService.refreshToken().subscribe({
-      next: () => console.log('Session restored'),
-      error: () => console.log('No active session')
-    });
+    // Session initialization is now handled internally by AuthService constructor
+    // which then updates the isInitialized$ stream for Guards to consume.
 
     forkJoin({
       categories: this.categoryService.getCategories(),

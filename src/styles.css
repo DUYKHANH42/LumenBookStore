@@ -12,6 +12,8 @@ body {
 
 .material-symbols-outlined {
   font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  unicode-bidi: bidi-override !important;
+  direction: ltr !important;
 }
 
 .shadow-ambient {

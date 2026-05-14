@@ -9,7 +9,7 @@ import { Address } from '../models/address.model';
 import { FavoriteDto } from '../models/favorite.model';
 import { OrderService } from '../../services/order.service';
 import { Order, OrderFullDetail } from '../models/order.model';
-import { finalize } from 'rxjs';
+import { filter, finalize, take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-profile',
@@ -56,20 +56,25 @@ export class ProfileComponent implements OnInit {
   avatarPreview: string | ArrayBuffer | null = null;
 
   ngOnInit() {
-    if (!this.authService.isLoggedIn()) {
-      this.toastService.show('Vui lòng đăng nhập để truy cập!', 'warning');
-      this.router.navigate(['/login']);
-      return;
-    }
-
-    this.authService.currentUser$.subscribe(user => {
-      if (user) {
-        this.userInfo = { ...user };
+    this.authService.isInitialized$.pipe(
+      filter(init => init === true),
+      take(1)
+    ).subscribe(() => {
+      if (!this.authService.isLoggedIn()) {
+        this.toastService.show('Vui lòng đăng nhập để truy cập!', 'warning');
+        this.router.navigate(['/login']);
+        return;
       }
-    });
 
-    this.loadStats();
-    this.loadAddresses();
+      this.authService.currentUser$.subscribe(user => {
+        if (user) {
+          this.userInfo = { ...user };
+        }
+      });
+
+      this.loadStats();
+      this.loadAddresses();
+    });
   }
 
   loadStats() {
@@ -197,7 +202,7 @@ export class ProfileComponent implements OnInit {
         this.toastService.show('Chỉ hỗ trợ tải lên file hình ảnh (JPG, PNG...)', 'warning');
         return;
       }
-      const maxSize = 5 * 1024 * 1024; // 5MB
+      const maxSize = 5 * 1024 * 1024; 
       if (file.size > maxSize) {
         this.toastService.show('Kích thước ảnh quá lớn! Vui lòng chọn ảnh dưới 5MB.', 'warning');
         return;

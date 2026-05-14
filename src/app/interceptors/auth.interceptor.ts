@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, Injector } from '@angular/core';
 import {
   HttpRequest,
   HttpHandler,
@@ -13,8 +13,12 @@ import { Router } from '@angular/router';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  private authService = inject(AuthService);
+  private injector = inject(Injector);
   private router = inject(Router);
+
+  private get authService(): AuthService {
+    return this.injector.get(AuthService);
+  }
 
   private isRefreshing = false;
   private refreshTokenSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
