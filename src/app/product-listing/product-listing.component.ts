@@ -25,13 +25,20 @@ export class ProductListingComponent implements OnInit {
   private categoryService = inject(CategoryService);
   private subCategoryService = inject(SubCategoryService);
   private favoriteService = inject(FavoriteService);
-  private authService = inject(AuthService);
+  public authService = inject(AuthService);
   private toastService = inject(ToastService);
   private cartService = inject(CartService);
   private router = inject(Router);
 
+  addingProductIds: { [key: number]: boolean } = {};
+
   addToCart(product: Product) {
-    this.cartService.addToCart(product.id, 1).subscribe({
+    if (this.addingProductIds[product.id]) return;
+    this.addingProductIds[product.id] = true;
+
+    this.cartService.addToCart(product.id, 1).pipe(
+      finalize(() => this.addingProductIds[product.id] = false)
+    ).subscribe({
       next: () => {
         this.toastService.show(`Đã thêm "${product.name}" vào giỏ hàng!`, 'success');
       },

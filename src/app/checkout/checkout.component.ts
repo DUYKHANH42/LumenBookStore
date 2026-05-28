@@ -45,7 +45,7 @@ export class CheckoutComponent implements OnInit {
   isWardDropdownOpen = false;
   isAddingNewAddress = false;
 
-  private authService = inject(AuthService);
+  public authService = inject(AuthService);
 
   ngOnInit() {
     if (!this.authService.isLoggedIn()) {
@@ -103,8 +103,23 @@ export class CheckoutComponent implements OnInit {
     }
   }
 
+  updateStreetValidators() {
+    const streetCtrl = this.checkoutForm.get('street');
+    if (this.isAddingNewAddress) {
+      streetCtrl?.setValidators([
+        Validators.required,
+        Validators.minLength(5),
+        Validators.pattern(/\S+/)
+      ]);
+    } else {
+      streetCtrl?.clearValidators();
+    }
+    streetCtrl?.updateValueAndValidity();
+  }
+
   toggleAddNewAddress() {
     this.isAddingNewAddress = !this.isAddingNewAddress;
+    this.updateStreetValidators();
     if (this.isAddingNewAddress) {
       this.selectedAddressId = null;
       this.checkoutForm.patchValue({
@@ -131,6 +146,7 @@ export class CheckoutComponent implements OnInit {
             this.selectAddress(defaultAddr);
           }
         }
+        this.updateStreetValidators();
       },
       error: () => this.toastService.show('Không thể tải địa chỉ', 'error')
     });
@@ -138,6 +154,7 @@ export class CheckoutComponent implements OnInit {
 
   selectAddress(address: Address) {
     this.isAddingNewAddress = false;
+    this.updateStreetValidators();
     this.selectedAddressId = address.id;
     this.checkoutForm.patchValue({
       shippingName: address.receiverName,

@@ -50,7 +50,7 @@
               <div *ngFor="let product of suggestions" (mousedown)="onSelectProduct(product.id)"
                 class="flex items-center gap-4 px-4 py-3 hover:bg-blue-50 cursor-pointer transition-all group">
                 <div class="w-12 h-16 rounded-lg overflow-hidden flex-shrink-0 shadow-sm">
-                  <img [src]="(product.imageUrl || '').startsWith('http') ? product.imageUrl : 'https://bookstore-asp-nc.onrender.com/uploads/' + product.imageUrl"
+                  <img [src]="authService.getFullImageUrl(product.imageUrl, 'product')"
                     class="w-full h-full object-cover transition-transform group-hover:scale-110" />
                 </div>
                 <div class="flex-1 min-w-0">
@@ -104,7 +104,7 @@
               </div>
 
               <!-- Admin Link -->
-              <a *ngIf="user.roles?.includes('Admin')" href="https://bookstore-asp-nc.onrender.com/Admin"
+              <a *ngIf="user.roles?.includes('Admin')" routerLink="/Admin"
                 class="flex items-center gap-3 p-3 hover:bg-slate-100 rounded-2xl transition-all border-b border-slate-50 mb-1">
                 <span class="material-symbols-outlined text-slate-900">admin_panel_settings</span>
                 <span class="text-xs font-black text-slate-900 uppercase tracking-widest">Quản trị hệ thống</span>
@@ -182,45 +182,54 @@
 </nav>
 
 <!-- Mobile Menu Overlay -->
-<div *ngIf="isMenuOpen" 
-     class="fixed inset-0 z-[150] bg-slate-900/60 backdrop-blur-md lg:hidden animate-fadeIn"
-     (click)="toggleMenu()">
-  <div class="absolute right-0 top-0 bottom-0 w-80 bg-white shadow-2xl p-8 overflow-y-auto custom-scrollbar" (click)="$event.stopPropagation()">
+<div *ngIf="isMenuOpen" class="fixed inset-0 z-[150] bg-slate-900/60 backdrop-blur-md lg:hidden animate-fadeIn"
+  (click)="toggleMenu()">
+  <div class="absolute right-0 top-0 bottom-0 w-80 bg-white shadow-2xl p-8 overflow-y-auto custom-scrollbar"
+    (click)="$event.stopPropagation()">
     <div class="flex justify-between items-center mb-10">
       <img src="/imgs/logo_sach.png" alt="Logo" class="h-16 w-auto" />
-      <button (click)="toggleMenu()" class="w-10 h-10 rounded-full flex items-center justify-center bg-slate-50 text-slate-400 hover:bg-slate-900 hover:text-white transition-all">
+      <button (click)="toggleMenu()"
+        class="w-10 h-10 rounded-full flex items-center justify-center bg-slate-50 text-slate-400 hover:bg-slate-900 hover:text-white transition-all">
         <span class="material-symbols-outlined text-2xl">close</span>
       </button>
     </div>
-    
+
     <div class="space-y-10">
       <!-- Search on Mobile -->
       <div class="relative">
-        <input type="text" [(ngModel)]="searchTerm" (keyup.enter)="onKeywordSearch(); toggleMenu()" placeholder="Tìm kiếm..." class="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 px-6 pl-12 text-sm outline-none focus:border-blue-600 transition-all" />
+        <input type="text" [(ngModel)]="searchTerm" (keyup.enter)="onKeywordSearch(); toggleMenu()"
+          placeholder="Tìm kiếm..."
+          class="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 px-6 pl-12 text-sm outline-none focus:border-blue-600 transition-all" />
         <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">search</span>
       </div>
 
       <div>
         <h3 class="text-[10px] font-black uppercase tracking-[0.2em] text-blue-600 mb-6 px-2">Menu Chính</h3>
         <nav class="space-y-2">
-          <a routerLink="/" (click)="toggleMenu()" routerLinkActive="bg-blue-50 text-blue-600" [routerLinkActiveOptions]="{exact: true}" class="flex items-center gap-4 p-4 rounded-2xl text-slate-700 font-black text-xs uppercase tracking-widest hover:bg-blue-50 transition-all">
+          <a routerLink="/" (click)="toggleMenu()" routerLinkActive="bg-blue-50 text-blue-600"
+            [routerLinkActiveOptions]="{exact: true}"
+            class="flex items-center gap-4 p-4 rounded-2xl text-slate-700 font-black text-xs uppercase tracking-widest hover:bg-blue-50 transition-all">
             <span class="material-symbols-outlined">home</span> Trang chủ
           </a>
-          <a routerLink="/cart" (click)="toggleMenu()" routerLinkActive="bg-blue-50 text-blue-600" class="flex items-center gap-4 p-4 rounded-2xl text-slate-700 font-black text-xs uppercase tracking-widest hover:bg-blue-50 transition-all">
+          <a routerLink="/cart" (click)="toggleMenu()" routerLinkActive="bg-blue-50 text-blue-600"
+            class="flex items-center gap-4 p-4 rounded-2xl text-slate-700 font-black text-xs uppercase tracking-widest hover:bg-blue-50 transition-all">
             <span class="material-symbols-outlined">shopping_cart</span> Giỏ hàng
           </a>
         </nav>
       </div>
-      
+
       <div>
         <h3 class="text-[10px] font-black uppercase tracking-[0.2em] text-blue-600 mb-6 px-2">Danh mục</h3>
         <div class="space-y-2">
           <div *ngFor="let cat of navCategories" class="space-y-1">
-            <a [routerLink]="['/category', cat.id]" (click)="toggleMenu()" routerLinkActive="bg-blue-50 text-blue-600" class="flex items-center gap-4 p-4 rounded-2xl text-slate-700 font-black text-xs uppercase tracking-widest hover:bg-blue-50 transition-all">
+            <a [routerLink]="['/category', cat.id]" (click)="toggleMenu()" routerLinkActive="bg-blue-50 text-blue-600"
+              class="flex items-center gap-4 p-4 rounded-2xl text-slate-700 font-black text-xs uppercase tracking-widest hover:bg-blue-50 transition-all">
               <span class="material-symbols-outlined text-blue-600">{{getCategoryIcon(cat.name)}}</span> {{cat.name}}
             </a>
             <div *ngIf="cat.subCategories && cat.subCategories.length > 0" class="pl-12 space-y-1">
-              <a *ngFor="let sub of cat.subCategories" [routerLink]="['/subcategory', sub.id]" (click)="toggleMenu()" routerLinkActive="text-blue-600 font-black" class="block py-2 text-[13px] text-slate-500 font-bold hover:text-blue-600 transition-all">
+              <a *ngFor="let sub of cat.subCategories" [routerLink]="['/subcategory', sub.id]" (click)="toggleMenu()"
+                routerLinkActive="text-blue-600 font-black"
+                class="block py-2 text-[13px] text-slate-500 font-bold hover:text-blue-600 transition-all">
                 {{sub.name}}
               </a>
             </div>

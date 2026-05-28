@@ -20,7 +20,7 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
   private route = inject(ActivatedRoute);
   private productService = inject(ProductService);
   private favoriteService = inject(FavoriteService);
-  private authService = inject(AuthService);
+  public authService = inject(AuthService);
   private toastService = inject(ToastService);
   private cartService = inject(CartService);
   private reviewService = inject(ReviewService);
@@ -32,14 +32,20 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
   isSubmittingReview: boolean = false;
   canReview: boolean = false;
   selectedImage: string = '';
+  addingProductIds: { [key: number]: boolean } = {};
 
   addToCart(productParam?: Product, quantityParam?: number) {
     const targetProduct = productParam || this.product;
     if (!targetProduct) return;
     
+    if (this.addingProductIds[targetProduct.id]) return;
+    this.addingProductIds[targetProduct.id] = true;
+    
     const qty = quantityParam || (productParam ? 1 : this.quantity);
 
-    this.cartService.addToCart(targetProduct.id, qty).subscribe({
+    this.cartService.addToCart(targetProduct.id, qty).pipe(
+      finalize(() => this.addingProductIds[targetProduct.id] = false)
+    ).subscribe({
       next: () => {
         this.toastService.show('Đã thêm sản phẩm vào giỏ hàng!', 'success');
       },
@@ -58,7 +64,12 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
 
     if (!this.product) return;
     
-    this.cartService.addToCart(this.product.id, this.quantity).subscribe({
+    if (this.addingProductIds[this.product.id]) return;
+    this.addingProductIds[this.product.id] = true;
+    
+    this.cartService.addToCart(this.product.id, this.quantity).pipe(
+      finalize(() => this.addingProductIds[this.product!.id] = false)
+    ).subscribe({
       next: () => {
         this.router.navigate(['/checkout']);
       },

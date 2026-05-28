@@ -4,6 +4,7 @@ import { Cart, CartItem } from '../models/cart.model';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { ToastService } from '../../services/toast.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-cart',
@@ -12,6 +13,7 @@ import { ToastService } from '../../services/toast.service';
 export class CartComponent implements OnInit, OnDestroy {
   private cartService = inject(CartService);
   private toastService = inject(ToastService);
+  public authService = inject(AuthService);
 
   cart$: Observable<Cart> = this.cartService.cart$;
   private updateSubject = new Subject<{ productId: number, quantity: number }>();

@@ -173,14 +173,30 @@ export class CartService {
     };
   }
 
+  syncCartWithServer(): Observable<any> {
+    const guestItems = this.getGuestItems();
+    if (guestItems.length === 0) {
+      this.loadCartFromServer();
+      return of({ success: true });
+    }
+    
+    const syncData = guestItems.map(i => ({ productId: i.productId, quantity: i.quantity }));
+    return this.http.post<any>(`${this.apiUrl}/sync`, syncData).pipe(
+      tap(res => {
+        this.clearLocalCart();
+        const cart = this.mapServerCart(res);
+        this.cartSubject.next(cart);
+      })
+    );
+  }
+
   clearCart(): Observable<any> {
     if (this.authService.isLoggedIn()) {
       return this.http.delete(`${this.apiUrl}/clear`).pipe(
         tap(() => this.loadCartFromServer())
       );
     } else {
-      localStorage.removeItem('guest_cart');
-      this.cartSubject.next({ id: 0, items: [], totalPrice: 0, totalItems: 0 });
+      this.clearLocalCart();
       return of({ success: true });
     }
   }

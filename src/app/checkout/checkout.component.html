@@ -116,7 +116,7 @@
                 class="w-full bg-slate-50 border border-slate-100 rounded-2xl px-5 py-4 font-bold text-slate-800 outline-none focus:border-blue-600 transition-all"
                 [class.border-rose-500]="checkoutForm.get('street')?.touched && checkoutForm.get('street')?.invalid">
               <div *ngIf="checkoutForm.get('street')?.touched && checkoutForm.get('street')?.invalid" class="text-rose-500 text-[10px] font-bold pl-1 mt-1 animate-fadeIn">
-                Vui lòng nhập số nhà và tên đường.
+                Địa chỉ chi tiết phải có ít nhất 5 ký tự và không được chỉ chứa khoảng trắng.
               </div>
             </div>
           </div>
@@ -220,7 +220,7 @@
           <div *ngFor="let item of cart.items" class="flex gap-4">
             <div class="w-16 h-20 bg-slate-50 rounded-xl overflow-hidden flex-shrink-0">
               <img
-                [src]="(item.imageUrl || '').startsWith('http') ? item.imageUrl : 'https://bookstore-asp-nc.onrender.com/uploads/' + item.imageUrl"
+                [src]="authService.getFullImageUrl(item.imageUrl, 'product')"
                 class="w-full h-full object-cover">
             </div>
             <div class="flex-1 min-w-0">

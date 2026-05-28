@@ -1,6 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { FavoriteService } from '../../services/favorite.service';
 import { FavoriteDto } from '../models/favorite.model';
+import { AuthService } from '../../services/auth.service';
 import { finalize } from 'rxjs';
 
 @Component({
@@ -9,6 +10,7 @@ import { finalize } from 'rxjs';
 })
 export class FavoritesListComponent implements OnInit {
   private favoriteService = inject(FavoriteService);
+  public authService = inject(AuthService);
   
   favorites: FavoriteDto[] = [];
   isLoading = false;

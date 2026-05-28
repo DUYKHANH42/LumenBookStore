@@ -39,7 +39,7 @@ export class AddressFormComponent implements OnInit {
     this.addressForm = this.fb.group({
       receiverName: [this.address?.receiverName || this.defaultName, [Validators.required, Validators.minLength(2)]],
       phoneNumber: [initialPhone, [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
-      street: ['', [Validators.required]], // Will use this to build addressLine
+      street: ['', [Validators.required, Validators.minLength(5), Validators.pattern(/\S+/)]], // Will use this to build addressLine
       isDefault: [this.address?.isDefault || false]
     });
 

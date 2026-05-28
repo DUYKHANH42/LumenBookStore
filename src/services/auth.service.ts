@@ -46,12 +46,16 @@ export class AuthService {
     this.refreshToken().pipe(
       finalize(() => this.isInitializedSubject.next(true))
     ).subscribe({
-      next: () => {
-        // Sau khi có token, lấy thông tin đầy đủ
-        this.getProfile().subscribe();
+      next: (res) => {
+        if (res && res.isSuccess) {
+          // Sau khi có token, lấy thông tin đầy đủ
+          this.getProfile().subscribe();
+        } else {
+          // Nếu refresh lỗi (hết hạn hoàn toàn), xóa sạch session
+          this.clearLocalSession();
+        }
       },
       error: () => {
-        // Nếu refresh lỗi (hết hạn hoàn toàn), xóa sạch session
         this.clearLocalSession();
       }
     });
@@ -71,6 +75,10 @@ export class AuthService {
           if (res.email) localStorage.setItem('email', res.email);
         }
         return res;
+      }),
+      catchError(err => {
+        this.clearLocalSession();
+        throw err;
       })
     );
   }
@@ -137,7 +145,13 @@ export class AuthService {
 
   // Đăng xuất
   logout(): void {
-    this.http.post(`${this.apiUrl}/logout`, {}, { withCredentials: true }).subscribe();
+    this.http.post(`${this.apiUrl}/logout`, {}, { withCredentials: true }).subscribe({
+      error: () => {} // ignore error if session already invalid
+    });
+    this.clearLocalSession();
+  }
+
+  forceClearSession(): void {
     this.clearLocalSession();
   }
 
@@ -188,13 +202,16 @@ export class AuthService {
   }
 
   // Hàm helper để lấy đường dẫn ảnh đầy đủ
-  getFullImageUrl(url: string | undefined | null): string {
+  getFullImageUrl(url: string | undefined | null, type: 'avatar' | 'product' = 'avatar'): string {
     if (!url) return '';
     if (url.startsWith('http')) return url;
     const baseUrl = environment.uploadUrl.replace(/\/uploads$/, '');
     if (url.startsWith('/uploads') || url.startsWith('uploads')) {
       const cleanUrl = url.startsWith('/') ? url : '/' + url;
       return `${baseUrl}${cleanUrl}`;
+    }
+    if (type === 'product') {
+      return `${environment.uploadUrl}/${url}`;
     }
     return `${environment.uploadUrl}/avatars/${url}`;
   }

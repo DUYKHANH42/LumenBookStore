@@ -45,6 +45,7 @@ export class ProfileComponent implements OnInit {
   @ViewChild('confirmPasswordInput') confirmPasswordInput!: ElementRef;
 
   errors: { [key: string]: boolean } = {};
+  passwordErrors: { [key: string]: string } = {};
 
   // Password fields
   currentPassword = '';
@@ -98,7 +99,7 @@ export class ProfileComponent implements OnInit {
 
   viewDetail(orderId: number) {
     this.orderService.getOrderDetails(orderId).subscribe({
-      next: (res) => {
+      next: (res: any) => {
         this.selectedOrder = res;
         this.showOrderDetail = true;
       },
@@ -107,8 +108,8 @@ export class ProfileComponent implements OnInit {
   }
 
   closeOrderDetail() {
-    this.showOrderDetail = false;
     this.selectedOrder = null;
+    this.showOrderDetail = false;
   }
 
   getStatusClass(status: string): string {
@@ -142,16 +143,21 @@ export class ProfileComponent implements OnInit {
 
   loadAddresses() {
     this.isLoadingAddresses = true;
-    this.addressService.getAddresses()
-      .pipe(finalize(() => this.isLoadingAddresses = false))
-      .subscribe({
-        next: res => this.addresses = res,
-        error: () => this.toastService.show('Không thể tải địa chỉ', 'error')
-      });
+    this.addressService.getAddresses().pipe(
+      finalize(() => this.isLoadingAddresses = false)
+    ).subscribe({
+      next: (res: any) => this.addresses = this.ensureArray(res),
+      error: () => this.toastService.show('Lỗi tải danh sách địa chỉ', 'error')
+    });
   }
 
-  openAddressForm(addr?: Address) {
-    this.selectedAddress = addr || null;
+  openAddAddress() {
+    this.selectedAddress = null;
+    this.showAddressForm = true;
+  }
+
+  openEditAddress(address: Address) {
+    this.selectedAddress = address;
     this.showAddressForm = true;
   }
 
@@ -169,7 +175,13 @@ export class ProfileComponent implements OnInit {
 
   onAddressSubmitted() {
     this.showAddressForm = false;
+    this.selectedAddress = null;
     this.loadAddresses();
+  }
+
+  onAddressCancelled() {
+    this.showAddressForm = false;
+    this.selectedAddress = null;
   }
 
   removeFavorite(productId: number) {
@@ -198,13 +210,8 @@ export class ProfileComponent implements OnInit {
   onAvatarSelected(event: any) {
     const file = event.target.files[0];
     if (file) {
-      if (!file.type.match(/image\/*/)) {
-        this.toastService.show('Chỉ hỗ trợ tải lên file hình ảnh (JPG, PNG...)', 'warning');
-        return;
-      }
-      const maxSize = 5 * 1024 * 1024; 
-      if (file.size > maxSize) {
-        this.toastService.show('Kích thước ảnh quá lớn! Vui lòng chọn ảnh dưới 5MB.', 'warning');
+      if (file.size > 2 * 1024 * 1024) {
+        this.toastService.show('Kích thước ảnh đại diện phải nhỏ hơn 2MB!', 'warning');
         return;
       }
       this.avatarFile = file;
@@ -214,38 +221,30 @@ export class ProfileComponent implements OnInit {
     }
   }
 
-  saveProfile() {
-    this.errors = {}; 
-    if (!this.userInfo?.fullName || this.userInfo.fullName.trim().length === 0) {
+  updateProfile() {
+    this.errors = {};
+    if (!this.userInfo?.fullName?.trim()) {
       this.errors['fullName'] = true;
-      this.toastService.show('Họ và tên không được để trống!', 'warning');
       this.fullNameInput.nativeElement.focus();
       return;
     }
-    if (this.userInfo?.phoneNumber && !/^(0|\+84)[3|5|7|8|9][0-9]{8}$/.test(this.userInfo.phoneNumber)) {
-      this.errors['phoneNumber'] = true;
-      this.toastService.show('Định dạng số điện thoại không hợp lệ!', 'warning');
+    if (!this.userInfo?.phoneNumber?.trim() || !/^[0-9]{10}$/.test(this.userInfo.phoneNumber)) {
+      this.errors['phone'] = true;
       this.phoneInput.nativeElement.focus();
       return;
     }
 
-    // Chuẩn bị FormData để gửi lên Server (multipart/form-data)
     const formData = new FormData();
-    formData.append('FullName', this.userInfo?.fullName || '');
-    formData.append('PhoneNumber', this.userInfo?.phoneNumber || '');
-    // Bổ sung isActive
-    formData.append('IsActive', String(this.userInfo?.isActive ?? true));
-
+    formData.append('FullName', this.userInfo.fullName);
+    formData.append('PhoneNumber', this.userInfo.phoneNumber);
     if (this.avatarFile) {
       formData.append('AvatarFile', this.avatarFile);
     }
 
-    // Hiển thị trạng thái đang xử lý (có thể thêm biến isLoading nếu cần)
     this.authService.updateProfile(formData).subscribe({
       next: (res) => {
         if (res.isSuccess) {
           this.toastService.show('Cập nhật hồ sơ thành công!', 'success');
-          // Reset avatar file sau khi upload thành công
           this.avatarFile = null;
         } else {
           this.toastService.show(res.message || 'Cập nhật thất bại', 'error');
@@ -258,22 +257,29 @@ export class ProfileComponent implements OnInit {
   isLoading = false;
 
   changePassword() {
-    this.errors = {}; 
+    this.passwordErrors = {}; 
     if (!this.currentPassword) {
-      this.errors['currentPassword'] = true;
-      this.toastService.show('Vui lòng nhập mật khẩu hiện tại!', 'warning');
+      this.passwordErrors['currentPassword'] = 'Vui lòng nhập mật khẩu hiện tại!';
       this.currentPasswordInput.nativeElement.focus();
       return;
     }
     if (!this.newPassword) {
-      this.errors['newPassword'] = true;
-      this.toastService.show('Vui lòng nhập mật khẩu mới!', 'warning');
+      this.passwordErrors['newPassword'] = 'Vui lòng nhập mật khẩu mới!';
+      this.newPasswordInput.nativeElement.focus();
+      return;
+    }
+    if (this.newPassword.length < 6) {
+      this.passwordErrors['newPassword'] = 'Mật khẩu mới phải có ít nhất 6 ký tự!';
+      this.newPasswordInput.nativeElement.focus();
+      return;
+    }
+    if (this.newPassword === this.currentPassword) {
+      this.passwordErrors['newPassword'] = 'Mật khẩu mới không được trùng với mật khẩu cũ!';
       this.newPasswordInput.nativeElement.focus();
       return;
     }
     if (this.newPassword !== this.confirmPassword) {
-      this.errors['confirmPassword'] = true;
-      this.toastService.show('Mật khẩu xác nhận không khớp!', 'error');
+      this.passwordErrors['confirmPassword'] = 'Mật khẩu xác nhận không khớp!';
       this.confirmPasswordInput.nativeElement.focus();
       return;
     }
@@ -287,16 +293,25 @@ export class ProfileComponent implements OnInit {
       next: (res) => {
         if (res.isSuccess) {
           this.toastService.show('Đổi mật khẩu thành công!', 'success');
-          // Reset form
           this.currentPassword = '';
           this.newPassword = '';
           this.confirmPassword = '';
         } else {
-          this.toastService.show(res.message || 'Đổi mật khẩu thất bại', 'error');
+          const msg = res.message || 'Đổi mật khẩu thất bại';
+          if (msg.includes('hiện tại') || msg.includes('Current') || msg.includes('mật khẩu cũ')) {
+            this.passwordErrors['currentPassword'] = msg;
+          } else {
+            this.passwordErrors['newPassword'] = msg;
+          }
         }
       },
       error: (err) => {
-        this.toastService.show(err.error?.message || 'Lỗi hệ thống khi đổi mật khẩu', 'error');
+        const msg = err.error?.message || 'Lỗi hệ thống khi đổi mật khẩu';
+        if (msg.includes('hiện tại') || msg.includes('Current') || msg.includes('mật khẩu cũ')) {
+          this.passwordErrors['currentPassword'] = msg;
+        } else {
+          this.passwordErrors['newPassword'] = msg;
+        }
       }
     });
   }

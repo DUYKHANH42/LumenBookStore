@@ -2,6 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { CartService } from '../../services/cart.service';
 import { finalize } from 'rxjs';
 import { environment } from '../../environments/environment';
 
@@ -12,6 +13,7 @@ import { environment } from '../../environments/environment';
 export class LoginComponent implements OnInit {
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
+  private cartService = inject(CartService);
   private router = inject(Router);
 
   loginForm!: FormGroup;
@@ -40,12 +42,18 @@ export class LoginComponent implements OnInit {
         next: (res) => {
           if (res.isSuccess) {
             const roles = res.roles || [];
-            if (roles.includes('Admin')) {
-              const backendUrl = environment.apiUrl.replace('/api', '');
-              window.location.href = `${backendUrl}/Admin`;
-            } else {
-              this.router.navigate(['/']);
-            }
+            
+            // Đồng bộ giỏ hàng từ LocalStorage lên Server
+            this.cartService.syncCartWithServer().subscribe({
+              next: () => {
+                if (roles.includes('Admin')) {
+                  const backendUrl = environment.apiUrl.replace('/api', '');
+                  window.location.href = `${backendUrl}/Admin`;
+                } else {
+                  this.router.navigate(['/']);
+                }
+              }
+            });
           } else {
             this.errorMessage = res.message || 'Email hoặc mật khẩu không chính xác.';
           }

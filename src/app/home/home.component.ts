@@ -27,8 +27,15 @@ export class HomeComponent implements OnInit, OnDestroy {
   private cartService = inject(CartService);
   private router = inject(Router);
 
+  addingProductIds: { [key: number]: boolean } = {};
+
   addToCart(product: Product) {
-    this.cartService.addToCart(product.id, 1).subscribe({
+    if (this.addingProductIds[product.id]) return;
+    this.addingProductIds[product.id] = true;
+
+    this.cartService.addToCart(product.id, 1).pipe(
+      finalize(() => this.addingProductIds[product.id] = false)
+    ).subscribe({
       next: () => {
         this.toastService.show(`Đã thêm "${product.name}" vào giỏ hàng!`, 'success');
       },
