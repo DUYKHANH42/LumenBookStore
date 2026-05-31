@@ -83,7 +83,7 @@ export class ProductListingComponent implements OnInit {
   
   categories: Category[] = [];
   subCategories: SubCategory[] = [];
-  currentType: 'category' | 'subcategory' = 'category';
+  currentType: 'category' | 'subcategory' | 'sale' = 'category';
   currentId: number = 0;
   parentCategory: Category | null = null; 
 
@@ -110,8 +110,14 @@ export class ProductListingComponent implements OnInit {
           this.currentType = 'category'; 
           this.title = `Kết quả tìm kiếm cho "${this.searchTerm}"`;
           this.currentId = 0;
+        } else if (url.length > 0 && url[0].path === 'sale') {
+          this.currentType = 'sale';
+          this.title = 'Sản phẩm khuyến mãi';
+          this.description = 'Những ưu đãi Flash Sale đang hoạt động trong hôm nay.';
+          this.currentId = 0;
         } else {
           this.currentType = url.length > 0 && url[0].path === 'category' ? 'category' : 'subcategory';
+          this.description = 'Khám phá bộ sưu tập được tuyển chọn kỹ lưỡng.';
         }
         
         this.resetFilters();
@@ -142,7 +148,9 @@ export class ProductListingComponent implements OnInit {
 
     let request$: Observable<PagedResult<Product>>;
 
-    if (this.currentType === 'category') {
+    if (this.currentType === 'sale') {
+        request$ = this.productService.getProductsPaged(this.currentPage, this.pageSize, this.minPrice, this.maxPrice, this.sortBy, undefined, undefined, this.searchTerm, true);
+    } else if (this.currentType === 'category') {
         request$ = this.productService.getProductsPaged(this.currentPage, this.pageSize, this.minPrice, this.maxPrice, this.sortBy, this.currentId, undefined, this.searchTerm);
     } else {
         request$ = this.productService.getProductsPaged(this.currentPage, this.pageSize, this.minPrice, this.maxPrice, this.sortBy, undefined, this.currentId, this.searchTerm);
@@ -167,7 +175,12 @@ export class ProductListingComponent implements OnInit {
         const categories = this.ensureArray(res.allCats);
         const subCategories = this.ensureArray(res.allSubCats);
         
-        if (this.currentType === 'category') {
+        if (this.currentType === 'sale') {
+          this.title = 'Sản phẩm khuyến mãi';
+          this.description = 'Những ưu đãi Flash Sale đang hoạt động trong hôm nay.';
+          this.subCategories = [];
+          this.parentCategory = null;
+        } else if (this.currentType === 'category') {
           const cat = categories.find(c => c.id === this.currentId);
           if (!this.searchTerm) {
             this.title = cat ? (cat.name || (cat as any).Name) : 'Danh mục';

@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, of, forkJoin } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { finalize, map, shareReplay, tap } from 'rxjs/operators';
 import { environment } from '../environments/environment';
 import { AuthService } from './auth.service';
 import { Cart, CartItem } from '../app/models/cart.model';
@@ -15,21 +15,22 @@ export class CartService {
   private authService = inject(AuthService);
   private productService = inject(ProductService);
   private apiUrl = `${environment.apiUrl}/cart`;
+  private syncCartRequest?: Observable<any>;
 
   private cartSubject = new BehaviorSubject<Cart>({ id: 0, items: [], totalPrice: 0, totalItems: 0 });
   public cart$ = this.cartSubject.asObservable();
-
-  constructor() {
-    this.initCart();
-  }
-
-  private initCart() {
-    if (this.authService.isLoggedIn()) {
-      this.loadCartFromServer();
+constructor() {
+  // Lắng nghe sự thay đổi của user từ AuthService
+  this.authService.currentUser$.subscribe(user => {
+    if (user) {
+      // Khi user login: Tiến hành sync hoặc ít nhất là load lại từ server
+      this.syncCartWithServer().subscribe();
     } else {
+      // Khi user logout: Quay lại dùng local
       this.loadCartFromLocalStorage();
     }
-  }
+  });
+}
 
   loadCartFromServer() {
     this.http.get<any>(this.apiUrl).pipe(
@@ -174,6 +175,10 @@ export class CartService {
   }
 
   syncCartWithServer(): Observable<any> {
+    if (this.syncCartRequest) {
+      return this.syncCartRequest;
+    }
+
     const guestItems = this.getGuestItems();
     if (guestItems.length === 0) {
       this.loadCartFromServer();
@@ -181,13 +186,17 @@ export class CartService {
     }
     
     const syncData = guestItems.map(i => ({ productId: i.productId, quantity: i.quantity }));
-    return this.http.post<any>(`${this.apiUrl}/sync`, syncData).pipe(
+    this.syncCartRequest = this.http.post<any>(`${this.apiUrl}/sync`, syncData).pipe(
       tap(res => {
         this.clearLocalCart();
         const cart = this.mapServerCart(res);
         this.cartSubject.next(cart);
-      })
+      }),
+      finalize(() => this.syncCartRequest = undefined),
+      shareReplay(1)
     );
+
+    return this.syncCartRequest;
   }
 
   clearCart(): Observable<any> {

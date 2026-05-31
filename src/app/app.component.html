@@ -75,6 +75,9 @@
         <div class="hidden lg:flex items-center space-x-6 mr-4 border-r border-slate-200 pr-6">
           <a class="nav-link-refined text-slate-600 text-sm" routerLink="/" routerLinkActive="text-blue-600"><span
               class="material-symbols-outlined text-lg">home</span> Trang chủ</a>
+          <a class="nav-link-refined text-rose-600 text-sm font-black" routerLink="/sale" routerLinkActive="text-blue-700">
+            <span class="material-symbols-outlined text-lg text-amber-500">bolt</span> Khuyến mãi
+          </a>
         </div>
         <button routerLink="/cart" class="p-2 text-slate-700 relative group">
           <span
@@ -214,6 +217,10 @@
           <a routerLink="/cart" (click)="toggleMenu()" routerLinkActive="bg-blue-50 text-blue-600"
             class="flex items-center gap-4 p-4 rounded-2xl text-slate-700 font-black text-xs uppercase tracking-widest hover:bg-blue-50 transition-all">
             <span class="material-symbols-outlined">shopping_cart</span> Giỏ hàng
+          </a>
+          <a routerLink="/sale" (click)="toggleMenu()" routerLinkActive="bg-rose-50 text-rose-600"
+            class="flex items-center gap-4 p-4 rounded-2xl text-rose-600 font-black text-xs uppercase tracking-widest hover:bg-rose-50 transition-all">
+            <span class="material-symbols-outlined text-amber-500">bolt</span> Khuyến mãi
           </a>
         </nav>
       </div>

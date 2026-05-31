@@ -22,7 +22,8 @@ export class ProductService {
     sortBy?: string,
     categoryId?: number,
     subCategoryId?: number,
-    searchTerm?: string
+    searchTerm?: string,
+    isFlashSale?: boolean
   ): Observable<PagedResult<Product>> {
     let params = new HttpParams()
       .set('PageNumber', page.toString()) 
@@ -34,6 +35,7 @@ export class ProductService {
     if (categoryId && categoryId > 0) params = params.set('CategoryId', categoryId.toString());
     if (subCategoryId && subCategoryId > 0) params = params.set('SubCategoryId', subCategoryId.toString());
     if (searchTerm) params = params.set('Search', searchTerm);
+    if (isFlashSale) params = params.set('IsFlashSale', 'true');
 
     return this.http.get<PagedResult<Product>>(this.apiUrl, { params });
   }
